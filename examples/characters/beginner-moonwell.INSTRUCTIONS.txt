@@ -1,0 +1,59 @@
+AI DND 新手入门范例：《月井失灯》
+
+推荐导入方式：完整存档
+
+1. 启动项目。
+2. 打开 http://127.0.0.1:8787/
+3. 在 Chat 页面右侧角色区点击“导入”。
+4. 在 “Character Card JSON 文件路径” 填：
+     examples/characters/beginner-moonwell.bundle.json
+5. “数据库/RAG sidecar JSON 文件路径（可选）” 留空。
+6. 两个粘贴 JSON 的文本框都留空。
+7. 点击“导入角色”。
+8. 在角色列表选择“新手GM - 月井失灯”。
+9. 创建新聊天。
+10. 弹出“选择玩家 NPC 设定”时选择：
+     阿芦
+
+拆分导入方式：角色卡 + sidecar
+
+只有在你想分别改角色卡和数据库资料时才用这个方式。
+
+1. 在 “Character Card JSON 文件路径” 填：
+     examples/characters/beginner-moonwell.card.json
+2. 在 “数据库/RAG sidecar JSON 文件路径（可选）” 填：
+     examples/characters/beginner-moonwell.resources.json
+3. 两个粘贴 JSON 的文本框都留空。
+4. 点击“导入角色”。
+5. 创建新聊天，并选择玩家 NPC：
+     阿芦
+
+文件说明
+
+beginner-moonwell.bundle.json
+  项目原生完整存档。包含角色卡、初始聊天数据库、reference_texts 参考文本、全局关系数据和 runtime RAG。新手优先导入这个。
+
+beginner-moonwell.card.json
+  Character Card V2。包含 GM 名称、开场白、场景、主 Prompt、后置 Prompt、示例对话和小型 lore book。
+
+beginner-moonwell.resources.json
+  数据库/RAG sidecar。包含主角阿芦、NPC、背包、技能栏、状态栏、地图、场景、任务、关系图、阵营、reference_texts 和 runtime RAG。
+
+beginner-moonwell.prompts.md
+  给人看的 Prompt 说明，不导入。
+
+参考文本在哪里看
+
+导入并创建聊天后，在 Chat 页面右侧打开数据面板，选择当前聊天数据库集合：
+  reference_texts
+
+这个集合用于约束难度、物品强度、NPC 信任/恐慌、资源消耗和奖励价值。兼容旧说明的简化集合是：
+  beginner_reference_texts
+
+推荐首轮输入
+
+  我先观察井口、空灯罩和地上的痕迹。
+  我问莓婆婆昨晚谁最后靠近过月井灯。
+  我用白粉笔标记湿脚印，然后沿着脚印去旧磨坊。
+
+预计游玩长度：5 到 8 轮。

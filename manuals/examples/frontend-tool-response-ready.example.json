@@ -1,0 +1,64 @@
+{
+  "ok": true,
+  "status": "ready",
+  "reason": "",
+  "llmUsed": false,
+  "dryRun": true,
+  "request": {
+    "chatSessionId": "chat_example",
+    "actorId": "pc_arin",
+    "itemId": "potion_healing"
+  },
+  "actor": {
+    "actorId": "pc_arin",
+    "name": "Arin",
+    "isPlayer": true
+  },
+  "targetPolicy": "self",
+  "targetCandidates": [
+    {
+      "actorId": "pc_arin",
+      "name": "Arin",
+      "actorType": "player",
+      "isPlayer": true,
+      "relation": "self"
+    }
+  ],
+  "resourceCostPreview": [
+    {
+      "kind": "consumeItem",
+      "itemId": "potion_healing",
+      "before": 2,
+      "after": 1
+    }
+  ],
+  "stateChangesPreview": [
+    {
+      "targetId": "pc_arin",
+      "path": "values.hp",
+      "operation": "increase",
+      "amount": 4
+    }
+  ],
+  "risk": {
+    "level": "low",
+    "writesState": true,
+    "requiresUserAuthorization": false
+  },
+  "displayHints": {
+    "surface": "inventory",
+    "panel": "slot-use-preview",
+    "severity": "info",
+    "primaryAction": "confirm",
+    "sections": ["costs", "effects", "targets"]
+  },
+  "directToolCall": {
+    "tool": "system.item_use.use_item",
+    "input": {
+      "chatSessionId": "chat_example",
+      "actorId": "pc_arin",
+      "itemId": "potion_healing",
+      "targetId": "pc_arin"
+    }
+  }
+}

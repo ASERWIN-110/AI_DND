@@ -1,0 +1,692 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>AI DND Tool Manager</title>
+    <link rel="icon" href="/app/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="/tool-manager/tool-manager.css?v=20260530e">
+    <script src="/tool-manager/tool-manager.js?v=20260530e" defer></script>
+  </head>
+  <body>
+    <div id="managerApp" class="manager-app">
+      <header class="topbar">
+        <div class="title-block">
+          <span class="kicker">AI DND</span>
+          <h1>Tool Manager</h1>
+        </div>
+        <div class="tool-batch-actions" aria-label="批量工具操作">
+          <select id="toolBatchScopeSelect" title="批量工具范围">
+            <option value="selected">Selected</option>
+            <option value="plugin">Plugin</option>
+            <option value="visible">Visible</option>
+            <option value="all">All</option>
+          </select>
+          <button id="importToolsButton" class="secondary-button" type="button">Import</button>
+          <button id="exportToolsButton" class="secondary-button" type="button">Export</button>
+          <button id="deleteToolsButton" class="secondary-button danger-button" type="button">Delete</button>
+          <input id="toolImportFileInput" type="file" accept=".json,application/json" hidden>
+        </div>
+        <div id="globalStats" class="global-stats" aria-label="工具统计"></div>
+        <div class="topbar-actions">
+          <a id="openChatLink" class="ghost-button" href="/app/" title="打开聊天应用">↗ Chat</a>
+          <button id="refreshButton" class="icon-button" type="button" title="刷新">↻</button>
+        </div>
+      </header>
+
+      <main class="manager-grid">
+        <section class="plugin-pane" aria-label="插件负载顺序">
+          <div class="pane-header">
+            <div>
+              <h2>Plugins</h2>
+              <p id="pluginCount">0 loaded</p>
+            </div>
+            <div class="icon-cluster">
+              <button id="movePluginUpButton" class="icon-button" type="button" title="上移">↑</button>
+              <button id="movePluginDownButton" class="icon-button" type="button" title="下移">↓</button>
+              <button id="resetOrderButton" class="icon-button" type="button" title="重置排序">↺</button>
+            </div>
+          </div>
+          <div class="filter-row">
+            <input id="pluginSearch" type="search" placeholder="搜索插件">
+          </div>
+          <div class="table-head plugin-head" aria-hidden="true">
+            <span>#</span>
+            <span>On</span>
+            <span>Plugin</span>
+            <span>Tools</span>
+          </div>
+          <div id="pluginList" class="plugin-list" role="list"></div>
+        </section>
+
+        <section class="tool-pane" aria-label="工具清单">
+          <div class="pane-header">
+            <div>
+              <h2>Tools</h2>
+              <p id="toolCount">0 visible</p>
+            </div>
+            <button id="exportButton" class="icon-button" type="button" title="导出配置" aria-label="导出配置">⤓</button>
+          </div>
+          <div class="tool-filters">
+            <input id="toolSearch" type="search" placeholder="搜索工具">
+            <select id="toolScopeSelect" title="工具范围">
+              <option value="selected">当前插件</option>
+              <option value="all">全部插件</option>
+            </select>
+            <select id="visibilitySelect" title="可见性">
+              <option value="all">全部</option>
+              <option value="public">public</option>
+              <option value="private">private</option>
+              <option value="internal">internal</option>
+            </select>
+            <select id="enabledSelect" title="启用状态">
+              <option value="all">all</option>
+              <option value="enabled">enabled</option>
+              <option value="disabled">disabled</option>
+            </select>
+          </div>
+          <div class="table-head tool-head" aria-hidden="true">
+            <span>On</span>
+            <span>Tool</span>
+            <span>Vis</span>
+            <span>Flags</span>
+          </div>
+          <div id="toolList" class="tool-list" role="list"></div>
+        </section>
+
+        <aside class="detail-pane" aria-label="详情">
+          <div class="detail-tabs">
+            <label class="field-label compact" for="detailViewSelect">View</label>
+            <select id="detailViewSelect" title="详情视图">
+              <option value="detail">Detail</option>
+              <option value="schema">Schema</option>
+              <option value="execute">Run</option>
+              <option value="loop">Loop</option>
+              <option value="prompt">Prompt</option>
+              <option value="debug">Debug</option>
+              <option value="access">Access</option>
+              <option value="assets">Assets</option>
+              <option value="api">API</option>
+            </select>
+          </div>
+
+          <section id="detailPanel" class="detail-panel active">
+            <div id="selectionHeader" class="selection-header"></div>
+            <div id="apiShortcutBlock" class="api-shortcut-block"></div>
+            <div id="dependencyBlock" class="dependency-block"></div>
+            <div id="metadataBlock" class="json-block"></div>
+          </section>
+
+          <section id="schemaPanel" class="detail-panel">
+            <div class="schema-toolbar">
+              <button id="copySchemaButton" class="secondary-button" type="button">Copy</button>
+            </div>
+            <div id="schemaMeaningBlock" class="schema-meaning-block"></div>
+            <pre id="schemaPreview" class="code-panel"></pre>
+          </section>
+
+          <section id="executePanel" class="detail-panel">
+            <label class="field-label" for="toolInputJson">Input JSON</label>
+            <textarea id="toolInputJson" class="json-editor" spellcheck="false"></textarea>
+            <label class="field-label" for="toolContextJson">Context JSON</label>
+            <textarea id="toolContextJson" class="json-editor small" spellcheck="false"></textarea>
+            <button id="executeToolButton" class="primary-button full-width" type="button">Run Selected Tool</button>
+            <label class="field-label" for="toolOutputJson">Output</label>
+            <pre id="toolOutputJson" class="code-panel output"></pre>
+          </section>
+
+          <section id="loopPanel" class="detail-panel">
+            <div class="loop-manager">
+              <div class="loop-header">
+                <div>
+                  <h2>Loop Flow Manager</h2>
+                  <p id="loopManagerSummary">loading</p>
+                </div>
+                <div class="loop-actions">
+                  <button id="refreshLoopConfigsButton" class="secondary-button" type="button">Refresh</button>
+                  <button id="refreshLoopPreviewButton" class="secondary-button" type="button">Preview</button>
+                  <button id="newLoopConfigButton" class="secondary-button" type="button">New</button>
+                  <button id="importLoopConfigButton" class="secondary-button" type="button">Import</button>
+                  <button id="exportLoopConfigButton" class="secondary-button" type="button">Export</button>
+                  <button id="exportLoopPreviewButton" class="secondary-button" type="button">Export Preview</button>
+                  <input id="loopConfigImportFileInput" type="file" accept=".json,application/json" hidden>
+                </div>
+              </div>
+              <div class="loop-status-grid">
+                <div>
+                  <span class="field-label compact">Active Config</span>
+                  <strong id="activeLoopConfigLabel">none</strong>
+                </div>
+                <div>
+                  <span class="field-label compact">Storage</span>
+                  <strong id="loopStorageLabel">unknown</strong>
+                </div>
+              </div>
+              <div class="loop-control-grid">
+                <label class="field-label" for="loopConfigSelect">Config</label>
+                <select id="loopConfigSelect"></select>
+                <button id="loadLoopConfigButton" class="secondary-button" type="button">Load</button>
+                <button id="saveLoopConfigButton" class="primary-button" type="button">Save</button>
+                <button id="switchLoopConfigButton" class="secondary-button" type="button">Hot Switch</button>
+                <button id="archiveLoopConfigButton" class="secondary-button" type="button">Archive</button>
+                <button id="deleteLoopConfigButton" class="secondary-button danger-button" type="button">Delete</button>
+              </div>
+              <div class="loop-preview-header">
+                <span class="field-label compact">Execution Preview</span>
+                <strong id="loopPreviewSummary">not loaded</strong>
+              </div>
+              <div class="loop-preview-grid">
+                <div id="loopFlowPreview" class="loop-flow-preview"></div>
+                <pre id="loopBlueprintJson" class="code-panel loop-blueprint"></pre>
+              </div>
+              <div class="loop-router-manager">
+                <div class="loop-preview-header">
+                  <span class="field-label compact">Router Policy</span>
+                  <strong id="loopRouterPolicySummary">not loaded</strong>
+                </div>
+                <div class="loop-router-grid">
+                  <textarea id="loopRouterPolicyJson" class="json-editor router-editor" spellcheck="false"></textarea>
+                  <div class="loop-router-actions">
+                    <button id="loadLoopRouterPolicyButton" class="secondary-button" type="button">Load From Config</button>
+                    <button id="applyLoopRouterPolicyButton" class="primary-button" type="button">Apply To Config</button>
+                    <button id="resetLoopRouterPolicyButton" class="secondary-button" type="button">Reset Draft</button>
+                  </div>
+                </div>
+              </div>
+              <label class="field-label" for="loopConfigJson">Source Config JSON</label>
+              <textarea id="loopConfigJson" class="json-editor loop-editor" spellcheck="false"></textarea>
+              <label class="field-label" for="loopRunInputJson">Dry-Run Input JSON</label>
+              <textarea id="loopRunInputJson" class="json-editor small" spellcheck="false"></textarea>
+              <button id="dryRunLoopConfigButton" class="primary-button full-width" type="button">Dry-Run Flow</button>
+              <div class="loop-split">
+                <div>
+                  <h3>Archives</h3>
+                  <div id="loopArchiveList" class="loop-archive-list"></div>
+                </div>
+                <div>
+                  <h3>Output</h3>
+                  <pre id="loopRunOutputJson" class="code-panel output"></pre>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section id="debugPanel" class="detail-panel">
+            <div class="debug-toolbar">
+              <button id="runDebugToolButton" class="secondary-button" type="button">Run</button>
+              <button id="loadLatestTraceButton" class="secondary-button" type="button">Latest</button>
+              <select id="debugFileSelect" title="中间文件"></select>
+              <button id="refreshDebugFileButton" class="icon-button" type="button" title="刷新中间文件">↻</button>
+              <label class="live-toggle">
+                <input id="debugAutoRefreshInput" type="checkbox">
+                <span>Live</span>
+              </label>
+            </div>
+            <div id="debugFileMeta" class="debug-file-meta">no trace files</div>
+            <pre id="debugFilePreview" class="code-panel output"></pre>
+          </section>
+
+          <section id="promptPanel" class="detail-panel">
+            <div class="prompt-manager">
+              <div class="prompt-header">
+                <div>
+                  <h2 id="toolPromptTitle">LLM Prompt</h2>
+                  <p id="toolPromptSummary">no selection</p>
+                </div>
+                <div class="prompt-actions">
+                  <button id="loadLatestPromptButton" class="secondary-button" type="button">Read</button>
+                  <button id="useLatestPromptButton" class="secondary-button" type="button">Use</button>
+                  <button id="importPromptButton" class="secondary-button" type="button">Import</button>
+                  <button id="exportPromptButton" class="secondary-button" type="button">Export</button>
+                  <button id="resetPromptButton" class="secondary-button" type="button">Reset</button>
+                  <button id="savePromptButton" class="primary-button" type="button">Save</button>
+                  <input id="promptImportFileInput" type="file" accept=".json,application/json" hidden>
+                </div>
+              </div>
+              <div class="prompt-inventory-card">
+                <div class="prompt-inventory-header">
+                  <div>
+                    <h3>Prompt / Reference Inventory</h3>
+                    <p id="promptInventorySummary">0 tools</p>
+                  </div>
+                  <button id="exportAllPromptsButton" class="secondary-button" type="button">Export All</button>
+                </div>
+                <div class="prompt-inventory-toolbar">
+                  <input id="promptInventorySearch" type="search" placeholder="搜索 tool / plugin / 字段 / 说明">
+                  <select id="promptInventoryFilter">
+                    <option value="all">all prompt/reference tools</option>
+                    <option value="unconfigured">needs config</option>
+                    <option value="configured">configured</option>
+                    <option value="reference">reference-capable</option>
+                    <option value="prompt">prompt-capable</option>
+                    <option value="llm">LLM tools</option>
+                    <option value="quantification">quantification</option>
+                  </select>
+                </div>
+                <div id="promptInventoryList" class="prompt-inventory-list" role="list"></div>
+              </div>
+              <div class="prompt-control-row">
+                <label class="live-toggle">
+                  <input id="toolPromptEnabled" type="checkbox">
+                  <span>Enabled</span>
+                </label>
+                <label class="field-label inline" for="toolPromptMode">Mode</label>
+                <select id="toolPromptMode">
+                  <option value="inject">Inject</option>
+                  <option value="replace">Replace user prompt</option>
+                </select>
+              </div>
+              <div class="prompt-form">
+                <label class="field-label" for="toolPromptReplacement">Replacement Prompt</label>
+                <textarea id="toolPromptReplacement" class="prompt-editor" spellcheck="false"></textarea>
+                <label class="field-label" for="toolSystemPrompt">System Instruction</label>
+                <textarea id="toolSystemPrompt" class="prompt-editor small" spellcheck="false"></textarea>
+                <label class="field-label" for="toolPromptPrefix">Prompt Prefix</label>
+                <textarea id="toolPromptPrefix" class="prompt-editor small" spellcheck="false"></textarea>
+                <label class="field-label" for="toolPromptSuffix">Prompt Suffix</label>
+                <textarea id="toolPromptSuffix" class="prompt-editor small" spellcheck="false"></textarea>
+                <label class="field-label" for="toolPromptReferences">Reference Material</label>
+                <textarea id="toolPromptReferences" class="prompt-editor" spellcheck="false"></textarea>
+                <label class="field-label" for="toolPromptLatestPreview">Last Prompt / Reference</label>
+                <pre id="toolPromptLatestPreview" class="code-panel output"></pre>
+              </div>
+            </div>
+          </section>
+
+          <section id="accessPanel" class="detail-panel">
+            <div class="access-manager">
+              <div class="access-policy-card">
+                <div class="access-header">
+                  <div>
+                    <h2>Agent Access</h2>
+                    <p id="accessPolicySummary">0 blocked</p>
+                  </div>
+                  <button id="resetAccessPolicyButton" class="icon-button" type="button" title="重置 Agent 权限">↺</button>
+                </div>
+                <div class="access-toggle-grid">
+                  <label class="access-toggle">
+                    <input id="agentDatabaseReadAccess" type="checkbox">
+                    <span>
+                      <strong>Global DB Read</strong>
+                      <small>all database query/export/context</small>
+                    </span>
+                  </label>
+                  <label class="access-toggle">
+                    <input id="agentDatabaseWriteAccess" type="checkbox">
+                    <span>
+                      <strong>Global DB Write</strong>
+                      <small>all database create/update/delete/import</small>
+                    </span>
+                  </label>
+                  <div class="access-section-title">Profile DB Levels</div>
+                  <label class="access-toggle">
+                    <input id="agentDatabaseL1ReadAccess" type="checkbox">
+                    <span>
+                      <strong>L1 Read</strong>
+                      <small>light persona/profile facts</small>
+                    </span>
+                  </label>
+                  <label class="access-toggle">
+                    <input id="agentDatabaseL1WriteAccess" type="checkbox">
+                    <span>
+                      <strong>L1 Write</strong>
+                      <small>save light profile facts</small>
+                    </span>
+                  </label>
+                  <label class="access-toggle">
+                    <input id="agentDatabaseL2ReadAccess" type="checkbox">
+                    <span>
+                      <strong>L2 Read</strong>
+                      <small>deeper persona/profile facts</small>
+                    </span>
+                  </label>
+                  <label class="access-toggle">
+                    <input id="agentDatabaseL2WriteAccess" type="checkbox">
+                    <span>
+                      <strong>L2 Write</strong>
+                      <small>save deeper profile facts</small>
+                    </span>
+                  </label>
+                  <label class="access-toggle">
+                    <input id="agentDatabaseL3ReadAccess" type="checkbox">
+                    <span>
+                      <strong>L3 Read</strong>
+                      <small>hidden/high-stakes persona facts</small>
+                    </span>
+                  </label>
+                  <label class="access-toggle">
+                    <input id="agentDatabaseL3WriteAccess" type="checkbox">
+                    <span>
+                      <strong>L3 Write</strong>
+                      <small>save hidden/high-stakes facts</small>
+                    </span>
+                  </label>
+                  <div class="access-section-title">RAG Layers</div>
+                  <label class="access-toggle">
+                    <input id="agentRagReadAccess" type="checkbox">
+                    <span>
+                      <strong>Global RAG Read</strong>
+                      <small>all retrieval layers</small>
+                    </span>
+                  </label>
+                  <label class="access-toggle">
+                    <input id="agentRagWriteAccess" type="checkbox">
+                    <span>
+                      <strong>Global RAG Write</strong>
+                      <small>all remember/import/index</small>
+                    </span>
+                  </label>
+                  <label class="access-toggle">
+                    <input id="agentPermanentRagReadAccess" type="checkbox">
+                    <span>
+                      <strong>Permanent RAG Read</strong>
+                      <small>long-term character/lore retrieval</small>
+                    </span>
+                  </label>
+                  <label class="access-toggle">
+                    <input id="agentPermanentRagWriteAccess" type="checkbox">
+                    <span>
+                      <strong>Permanent RAG Write</strong>
+                      <small>save long-term character/lore</small>
+                    </span>
+                  </label>
+                </div>
+              </div>
+
+              <div class="access-call-card">
+                <div class="access-header">
+                  <div>
+                    <h2>Loop DB/RAG Calls</h2>
+                    <p id="accessCallSummary">no loop run</p>
+                  </div>
+                  <button id="clearAccessCallStatsButton" class="icon-button" type="button" title="清空本轮调用统计">×</button>
+                </div>
+                <div id="accessCallCountList" class="access-call-count-list"></div>
+              </div>
+
+              <div class="access-tool-card">
+                <div class="access-header">
+                  <div>
+                    <h2 id="accessTargetTitle">Selected Tool</h2>
+                    <p id="accessTargetSummary">no selection</p>
+                  </div>
+                </div>
+                <div id="accessCapabilityList" class="access-capability-list"></div>
+                <div class="access-actions">
+                  <button id="inheritAgentToolButton" class="secondary-button" type="button">Inherit</button>
+                  <button id="blockAgentToolButton" class="secondary-button" type="button">Block Tool</button>
+                  <button id="allowAgentToolButton" class="primary-button" type="button">Allow Tool</button>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section id="assetsPanel" class="detail-panel">
+            <div class="asset-manager">
+              <div class="asset-browser">
+                <div class="asset-header">
+                  <div>
+                    <h2>Visual Assets</h2>
+                    <p id="assetManagerSummary">not loaded</p>
+                  </div>
+                  <button id="refreshAssetsButton" class="secondary-button" type="button">Refresh</button>
+                </div>
+                <div class="asset-toolbar">
+                  <input id="assetSearchInput" type="search" placeholder="搜索 asset / binding / target">
+                  <select id="assetTargetFilter">
+                    <option value="all">all targets</option>
+                    <option value="npc">npc</option>
+                    <option value="map">map</option>
+                    <option value="item">item</option>
+                    <option value="scene">scene</option>
+                    <option value="event">event</option>
+                  </select>
+                </div>
+                <div class="asset-lists">
+                  <div>
+                    <div class="asset-list-title">Bindings</div>
+                    <div id="visualBindingList" class="asset-list" role="list"></div>
+                  </div>
+                  <div>
+                    <div class="asset-list-title">Assets</div>
+                    <div id="visualAssetList" class="asset-list" role="list"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="asset-editor">
+                <div class="asset-editor-header">
+                  <div>
+                    <h2 id="assetEditorTitle">Asset Binding</h2>
+                    <p id="assetEditorSummary">select or create a visual asset binding</p>
+                  </div>
+                  <div class="asset-actions">
+                    <button id="newAssetBindingButton" class="secondary-button" type="button">New</button>
+                    <button id="resolveAssetBindingButton" class="secondary-button" type="button">Resolve</button>
+                    <button id="saveVisualAssetButton" class="secondary-button" type="button">Save Asset</button>
+                    <button id="saveVisualBindingButton" class="secondary-button" type="button">Save Binding</button>
+                    <button id="saveVisualAssetBindingButton" class="primary-button" type="button">Save Both</button>
+                  </div>
+                </div>
+
+                <div id="visualAssetPreview" class="asset-preview"></div>
+
+                <div class="asset-form-grid">
+                  <div class="asset-section">
+                    <h3>Target Binding</h3>
+                    <div class="field-pair">
+                      <div>
+                        <label class="field-label" for="visualTargetType">Target Type</label>
+                        <select id="visualTargetType">
+                          <option value="npc">npc</option>
+                          <option value="map">map</option>
+                          <option value="item">item</option>
+                          <option value="scene">scene</option>
+                          <option value="player">player</option>
+                          <option value="status">status</option>
+                          <option value="faction">faction</option>
+                          <option value="quest">quest</option>
+                          <option value="custom">custom</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label class="field-label" for="visualTargetSelect">Known Target</label>
+                        <select id="visualTargetSelect"></select>
+                      </div>
+                    </div>
+                    <div class="field-pair">
+                      <div>
+                        <label class="field-label" for="visualTargetId">Target ID</label>
+                        <input id="visualTargetId" type="text" placeholder="npc_mira / map_old_tavern">
+                      </div>
+                      <div>
+                        <label class="field-label" for="visualSlot">Slot</label>
+                        <select id="visualSlot">
+                          <option value="portrait">portrait</option>
+                          <option value="token">token</option>
+                          <option value="background">background</option>
+                          <option value="icon">icon</option>
+                          <option value="overlay">overlay</option>
+                          <option value="panel">panel</option>
+                          <option value="animation">animation</option>
+                          <option value="sound">sound</option>
+                          <option value="model">model</option>
+                          <option value="default">default</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="field-pair">
+                      <div>
+                        <label class="field-label" for="visualBindingId">Binding ID</label>
+                        <input id="visualBindingId" type="text" placeholder="auto if empty">
+                      </div>
+                      <div>
+                        <label class="field-label" for="visualPriority">Priority</label>
+                        <input id="visualPriority" type="number" step="1" value="100">
+                      </div>
+                    </div>
+                    <div class="field-pair">
+                      <div>
+                        <label class="field-label" for="visualBindingStatus">Binding Status</label>
+                        <select id="visualBindingStatus">
+                          <option value="active">active</option>
+                          <option value="draft">draft</option>
+                          <option value="inactive">inactive</option>
+                          <option value="hidden">hidden</option>
+                          <option value="archived">archived</option>
+                          <option value="missing">missing</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label class="field-label" for="visualVisibility">Visibility</label>
+                        <select id="visualVisibility">
+                          <option value="public">public</option>
+                          <option value="player">player</option>
+                          <option value="gm">gm</option>
+                          <option value="hidden">hidden</option>
+                          <option value="debug">debug</option>
+                        </select>
+                      </div>
+                    </div>
+                    <label class="field-label" for="visualConditionsJson">Conditions JSON</label>
+                    <textarea id="visualConditionsJson" class="json-editor small" spellcheck="false"></textarea>
+                  </div>
+
+                  <div class="asset-section">
+                    <h3>Asset</h3>
+                    <div class="field-pair">
+                      <div>
+                        <label class="field-label" for="visualAssetId">Asset ID</label>
+                        <input id="visualAssetId" type="text" placeholder="asset_mira_portrait">
+                      </div>
+                      <div>
+                        <label class="field-label" for="visualAssetType">Asset Type</label>
+                        <select id="visualAssetType">
+                          <option value="image">image</option>
+                          <option value="animation">animation</option>
+                          <option value="sprite">sprite</option>
+                          <option value="video">video</option>
+                          <option value="audio">audio</option>
+                          <option value="model">model</option>
+                          <option value="icon">icon</option>
+                          <option value="effect">effect</option>
+                          <option value="custom">custom</option>
+                        </select>
+                      </div>
+                    </div>
+                    <label class="field-label" for="visualAssetName">Asset Name</label>
+                    <input id="visualAssetName" type="text" placeholder="米拉立绘">
+                    <label class="field-label" for="visualAssetUri">URI / URL</label>
+                    <input id="visualAssetUri" type="text" placeholder="/assets/npcs/mira.webp 或 https://...">
+                    <div class="field-pair">
+                      <div>
+                        <label class="field-label" for="visualMimeType">MIME Type</label>
+                        <input id="visualMimeType" type="text" placeholder="image/webp">
+                      </div>
+                      <div>
+                        <label class="field-label" for="visualAssetStatus">Asset Status</label>
+                        <select id="visualAssetStatus">
+                          <option value="active">active</option>
+                          <option value="draft">draft</option>
+                          <option value="missing">missing</option>
+                          <option value="hidden">hidden</option>
+                          <option value="archived">archived</option>
+                        </select>
+                      </div>
+                    </div>
+                    <label class="field-label" for="visualAssetTags">Tags</label>
+                    <input id="visualAssetTags" type="text" placeholder="npc, portrait">
+                    <label class="field-label" for="visualAssetPrompt">Art Prompt / Reference</label>
+                    <textarea id="visualAssetPrompt" class="json-editor small" spellcheck="false"></textarea>
+                    <label class="field-label" for="visualMetadataJson">Metadata JSON</label>
+                    <textarea id="visualMetadataJson" class="json-editor small" spellcheck="false"></textarea>
+                  </div>
+                </div>
+
+                <div class="asset-footer-actions">
+                  <button id="archiveVisualAssetButton" class="secondary-button" type="button">Archive Asset</button>
+                  <button id="archiveVisualBindingButton" class="secondary-button" type="button">Archive Binding</button>
+                </div>
+                <pre id="visualResolveOutput" class="code-panel output"></pre>
+              </div>
+            </div>
+          </section>
+
+          <section id="apiPanel" class="detail-panel">
+            <div class="api-manager">
+              <div class="api-targets">
+                <div class="api-target-header">
+                  <div>
+                    <h2>API Targets</h2>
+                    <p id="apiTargetCount">0 targets</p>
+                  </div>
+                  <button id="resetApiTargetsButton" class="icon-button" type="button" title="重置 API 目标">↺</button>
+                </div>
+                <input id="apiTargetSearch" type="search" placeholder="搜索 API 目标">
+                <div id="apiTargetList" class="api-target-list" role="list"></div>
+              </div>
+
+              <div class="api-editor">
+                <div class="api-editor-header">
+                  <div>
+                    <h2 id="apiTargetTitle">API</h2>
+                    <p id="apiTargetSubtitle">server</p>
+                  </div>
+                  <button id="copyChatApiButton" class="icon-button" type="button" title="复制 Chat API">⇤</button>
+                </div>
+
+                <div class="form-grid">
+                  <label class="field-label" for="apiProviderSelect">Provider</label>
+                  <select id="apiProviderSelect">
+                    <option value="server">Server Default</option>
+                    <option value="mock">Mock</option>
+                    <option value="openai">OpenAI</option>
+                    <option value="openai-compatible">OpenAI Compatible</option>
+                    <option value="ollama">Ollama</option>
+                    <option value="llama.cpp">llama.cpp</option>
+                    <option value="vllm">vLLM</option>
+                    <option value="tabbyapi">TabbyAPI</option>
+                    <option value="lm-studio">LM Studio</option>
+                    <option value="koboldcpp">KoboldCpp</option>
+                  </select>
+
+                  <label class="field-label" for="apiBaseUrl">Base URL</label>
+                  <input id="apiBaseUrl" type="url" placeholder="https://api.openai.com/v1">
+
+                  <label class="field-label" for="apiKey">API Key</label>
+                  <input id="apiKey" type="password" autocomplete="off">
+
+                  <label class="field-label" for="apiModel">Model</label>
+                  <input id="apiModel" type="text" placeholder="gpt-4.1-mini">
+
+                  <div class="field-pair">
+                    <div>
+                      <label class="field-label" for="apiTemperature">Temperature</label>
+                      <input id="apiTemperature" type="number" min="0" step="0.1" placeholder="0.7">
+                    </div>
+                    <div>
+                      <label class="field-label" for="apiMaxTokens">Max Tokens</label>
+                      <input id="apiMaxTokens" type="number" min="1" step="1" placeholder="2000">
+                    </div>
+                  </div>
+                </div>
+
+                <div class="api-actions">
+                  <button id="clearApiTargetButton" class="secondary-button" type="button">Clear</button>
+                  <button id="saveApiTargetButton" class="primary-button" type="button">Save</button>
+                </div>
+              </div>
+            </div>
+          </section>
+        </aside>
+      </main>
+
+      <footer class="statusbar">
+        <span id="connectionStatus">connecting</span>
+        <span id="selectedStatus">no selection</span>
+      </footer>
+    </div>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  </body>
+</html>

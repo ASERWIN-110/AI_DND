@@ -1,0 +1,266 @@
+{
+  "format": "ai-dnd-character-resources-v1",
+  "initialSetting": {
+    "version": "1",
+    "description": "Example seed for importing a playable AI DND character with chat data, player state, map data, and relationship graphs.",
+    "collections": [
+      {
+        "name": "npc_structured_states",
+        "fields": [
+          { "name": "npcId", "type": "text", "required": true },
+          { "name": "playerId", "type": "text" },
+          { "name": "name", "type": "text", "required": true },
+          { "name": "isPlayer", "type": "boolean" },
+          { "name": "sceneId", "type": "text" },
+          { "name": "status", "type": "text" },
+          { "name": "values", "type": "json" },
+          { "name": "statusBar", "type": "json" },
+          { "name": "resources", "type": "json" },
+          { "name": "skillBar", "type": "json" },
+          { "name": "inventory", "type": "json" },
+          { "name": "equipment", "type": "json" },
+          { "name": "specialStatuses", "type": "json" }
+        ],
+        "seedRecords": [
+          {
+            "id": "npcstate_pc_linya",
+            "npcId": "pc_linya",
+            "playerId": "pc_linya",
+            "name": "Linya",
+            "isPlayer": true,
+            "sceneId": "current",
+            "status": "careful",
+            "values": { "hp": 18, "maxHp": 20, "sanity": 13, "maxSanity": 16, "insight": 4 },
+            "statusBar": {
+              "hp": 18,
+              "maxHp": 20,
+              "sanity": 13,
+              "maxSanity": 16,
+              "conditions": ["careful", "rain-soaked"]
+            },
+            "resources": {
+              "saltChalk": { "name": "Salt chalk", "amount": 3, "max": 3 },
+              "lantern": { "name": "Hooded lantern", "amount": 1, "max": 1 },
+              "nerve": { "name": "Nerve", "amount": 2, "max": 3 }
+            },
+            "skillBar": {
+              "skills": [
+                { "id": "observe", "name": "Trace observation", "rank": 3, "ready": true },
+                { "id": "question", "name": "Low voice questioning", "rank": 2, "ready": true },
+                { "id": "wards", "name": "Salt warding", "rank": 2, "ready": true }
+              ]
+            },
+            "inventory": {
+              "items": [
+                { "id": "salt_chalk", "name": "Salt chalk", "quantity": 3 },
+                { "id": "hooded_lantern", "name": "Hooded lantern", "quantity": 1 },
+                { "id": "wax_scraper", "name": "Wax scraper", "quantity": 1 },
+                { "id": "evidence_envelope", "name": "Evidence envelope", "quantity": 2 }
+              ]
+            },
+            "equipment": {
+              "hand": { "name": "Short prybar" },
+              "coat": { "name": "Oilskin coat" }
+            },
+            "specialStatuses": [
+              {
+                "id": "harbor_pass",
+                "name": "Harbor pass",
+                "description": "Watchmen usually do not question the holder."
+              },
+              {
+                "id": "salt_smell",
+                "name": "Salt smell",
+                "description": "Fresh ward salt is easy for Linya to recognize."
+              }
+            ]
+          },
+          {
+            "id": "npcstate_mel",
+            "npcId": "npc_mel",
+            "name": "Mel",
+            "isPlayer": false,
+            "sceneId": "current",
+            "status": "afraid",
+            "values": { "trust": 2, "panic": 4 },
+            "inventory": {
+              "items": [
+                { "id": "wet_note", "name": "Wet note", "quantity": 1 }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "scene_records",
+        "fields": [
+          { "name": "sceneId", "type": "text", "required": true },
+          { "name": "title", "type": "text" },
+          { "name": "summary", "type": "text" },
+          { "name": "visibleClues", "type": "json" }
+        ],
+        "seedRecords": [
+          {
+            "id": "scene_current",
+            "sceneId": "current",
+            "title": "Bronze door under Old Bell Gate",
+            "summary": "Wet salt, black wax, drag marks, blue thread, and a bent watch badge mark the sealed door.",
+            "visibleClues": ["broken salt line", "black wax", "drag marks", "blue thread", "bent watch badge"]
+          }
+        ]
+      },
+      {
+        "name": "map_structured_states",
+        "fields": [
+          { "name": "mapId", "type": "text", "required": true },
+          { "name": "title", "type": "text" },
+          { "name": "areas", "type": "json" },
+          { "name": "objects", "type": "json" },
+          { "name": "hazards", "type": "json" }
+        ],
+        "seedRecords": [
+          {
+            "id": "map_old_bell_gate",
+            "mapId": "map_old_bell_gate",
+            "title": "Old Bell Gate threshold",
+            "areas": [
+              { "id": "gate", "name": "Bronze door threshold" },
+              { "id": "lamp", "name": "Street lamp corner" },
+              { "id": "drain", "name": "Rain drain" }
+            ],
+            "objects": [
+              { "id": "door", "name": "Bronze door" },
+              { "id": "wax", "name": "Black wax" },
+              { "id": "badge", "name": "Bent watch badge" }
+            ],
+            "hazards": [
+              { "id": "fog", "name": "Listening fog", "severity": 2 },
+              { "id": "slick_stone", "name": "Slick stone", "severity": 1 }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "scene_map_mounts",
+        "fields": [
+          { "name": "sceneId", "type": "text", "required": true },
+          { "name": "mapId", "type": "text", "required": true },
+          { "name": "isActive", "type": "boolean" }
+        ],
+        "seedRecords": [
+          {
+            "id": "mount_current_old_bell_gate",
+            "sceneId": "current",
+            "mapId": "map_old_bell_gate",
+            "isActive": true
+          }
+        ]
+      }
+    ]
+  },
+  "resources": {
+    "globalData": {
+      "collections": [
+        {
+          "collection": "npc_relation_nodes",
+          "records": [
+            {
+              "id": "pc_linya",
+              "npcId": "pc_linya",
+              "name": "Linya",
+              "tags": ["player"],
+              "summary": "Investigator with salt chalk, lantern, and evidence envelopes."
+            },
+            {
+              "id": "npc_mel",
+              "npcId": "npc_mel",
+              "name": "Mel",
+              "tags": ["informant"],
+              "summary": "Afraid informant at the bronze door."
+            }
+          ]
+        },
+        {
+          "collection": "npc_relation_edges",
+          "records": [
+            {
+              "id": "rel_mel_linya",
+              "sourceNpcId": "npc_mel",
+              "targetNpcId": "pc_linya",
+              "relation": "nervous trust",
+              "weight": 2
+            }
+          ]
+        },
+        {
+          "collection": "faction_nodes",
+          "records": [
+            {
+              "id": "faction_salt_guild",
+              "factionId": "faction_salt_guild",
+              "name": "Salt Guild",
+              "kind": "guild",
+              "summary": "Controls ward salt."
+            },
+            {
+              "id": "faction_iron_watch",
+              "factionId": "faction_iron_watch",
+              "name": "Iron Watch",
+              "kind": "watch",
+              "summary": "Searches for a missing guard."
+            },
+            {
+              "id": "faction_bell_ringers",
+              "factionId": "faction_bell_ringers",
+              "name": "Bell Ringers",
+              "kind": "crew",
+              "summary": "Keeps keys for the Old Bell Gate."
+            }
+          ]
+        },
+        {
+          "collection": "faction_edges",
+          "records": [
+            {
+              "id": "fedge_watch_salt",
+              "sourceFactionId": "faction_iron_watch",
+              "targetFactionId": "faction_salt_guild",
+              "relation": "jurisdiction dispute",
+              "tension": 3
+            },
+            {
+              "id": "fedge_bell_watch",
+              "sourceFactionId": "faction_bell_ringers",
+              "targetFactionId": "faction_iron_watch",
+              "relation": "withheld key records",
+              "tension": 2
+            }
+          ]
+        },
+        {
+          "collection": "faction_memberships",
+          "records": [
+            {
+              "id": "fm_linya_watch",
+              "factionId": "faction_iron_watch",
+              "actorId": "pc_linya",
+              "role": "temporary investigator"
+            },
+            {
+              "id": "fm_mel_salt",
+              "factionId": "faction_salt_guild",
+              "actorId": "npc_mel",
+              "role": "runner"
+            },
+            {
+              "id": "fm_missing_guard_bell",
+              "factionId": "faction_bell_ringers",
+              "actorId": "npc_missing_guard",
+              "role": "last key holder"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

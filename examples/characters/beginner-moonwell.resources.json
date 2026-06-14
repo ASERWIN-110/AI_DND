@@ -1,0 +1,623 @@
+{
+  "format": "ai-dnd-character-resources-v1",
+  "initialSetting": {
+    "version": "1",
+    "description": "新手入门范例《月井失灯》的可导入 sidecar。包含主角、NPC、场景、地图、任务、线索、教学规则和初始背包。",
+    "collections": [
+      {
+        "name": "npc_structured_states",
+        "fields": [
+          { "name": "npcId", "type": "text", "required": true },
+          { "name": "playerId", "type": "text" },
+          { "name": "name", "type": "text", "required": true },
+          { "name": "isPlayer", "type": "boolean" },
+          { "name": "sceneId", "type": "text" },
+          { "name": "status", "type": "text" },
+          { "name": "values", "type": "json" },
+          { "name": "statusBar", "type": "json" },
+          { "name": "resources", "type": "json" },
+          { "name": "skillBar", "type": "json" },
+          { "name": "inventory", "type": "json" },
+          { "name": "equipment", "type": "json" },
+          { "name": "specialStatuses", "type": "json" },
+          { "name": "notes", "type": "text" }
+        ],
+        "seedRecords": [
+          {
+            "id": "npcstate_pc_alu",
+            "npcId": "pc_alu",
+            "playerId": "pc_alu",
+            "name": "阿芦",
+            "isPlayer": true,
+            "sceneId": "scene_moonwell_square",
+            "status": "ready",
+            "values": {
+              "hp": 16,
+              "maxHp": 16,
+              "focus": 6,
+              "maxFocus": 6,
+              "luck": 2,
+              "trust": 1
+            },
+            "statusBar": {
+              "hp": 16,
+              "maxHp": 16,
+              "focus": 6,
+              "maxFocus": 6,
+              "conditions": ["初来乍到", "手持小提灯"]
+            },
+            "resources": {
+              "focus": { "name": "专注", "amount": 6, "max": 6 },
+              "luck": { "name": "好运", "amount": 2, "max": 2 },
+              "moonMatches": { "name": "月火柴", "amount": 2, "max": 2 },
+              "bread": { "name": "温面包", "amount": 1, "max": 1 }
+            },
+            "skillBar": {
+              "skills": [
+                { "id": "observe", "name": "观察", "rank": 2, "ready": true, "hint": "发现痕迹、线索和危险。" },
+                { "id": "talk", "name": "交涉", "rank": 2, "ready": true, "hint": "安抚 NPC、询问细节。" },
+                { "id": "tinker", "name": "巧手", "rank": 1, "ready": true, "hint": "修小机关、拆绳结、处理灯座。" },
+                { "id": "soothe", "name": "安抚", "rank": 2, "ready": true, "hint": "让受惊的小生灵冷静。" }
+              ]
+            },
+            "inventory": {
+              "items": [
+                { "id": "small_lantern", "name": "小提灯", "quantity": 1, "use": "照亮近处，让薄雾退开一小段。" },
+                { "id": "moon_match", "name": "月火柴", "quantity": 2, "use": "点亮冷光，吸引银蛾或检查灯芯。" },
+                { "id": "warm_bread", "name": "温面包", "quantity": 1, "use": "送给紧张的人或小生灵，降低敌意。" },
+                { "id": "chalk", "name": "白粉笔", "quantity": 1, "use": "标记走过的路，防止在薄雾里绕圈。" },
+                { "id": "copper_key", "name": "旧铜钥匙", "quantity": 1, "use": "打开旧磨坊侧门，但钥匙齿有缺口。" }
+              ]
+            },
+            "equipment": {
+              "hand": { "name": "小提灯" },
+              "pocket": { "name": "月火柴盒" }
+            },
+            "specialStatuses": [
+              {
+                "id": "beginner_protection",
+                "name": "新手保护",
+                "description": "第一次失败不会造成严重惩罚，只会暴露风险或消耗少量资源。"
+              }
+            ],
+            "notes": "默认玩家主角。新建聊天后请选择阿芦作为玩家 NPC 设定。"
+          },
+          {
+            "id": "npcstate_granny_mei",
+            "npcId": "npc_granny_mei",
+            "name": "莓婆婆",
+            "isPlayer": false,
+            "sceneId": "scene_moonwell_square",
+            "status": "worried",
+            "values": { "trust": 3, "patience": 4 },
+            "inventory": {
+              "items": [
+                { "id": "well_record", "name": "月井旧账本", "quantity": 1 }
+              ]
+            },
+            "notes": "村长。知道井灯昨晚还亮着，但不知道灰砾私自修过灯座。"
+          },
+          {
+            "id": "npcstate_xiaoyan",
+            "npcId": "npc_xiaoyan",
+            "name": "小砚",
+            "isPlayer": false,
+            "sceneId": "scene_moonwell_square",
+            "status": "curious",
+            "values": { "trust": 1, "fear": 1 },
+            "notes": "学徒。看到银蛾飞向旧磨坊，但怕被说多嘴。"
+          },
+          {
+            "id": "npcstate_grit",
+            "npcId": "npc_grit",
+            "name": "灰砾",
+            "isPlayer": false,
+            "sceneId": "scene_old_mill",
+            "status": "hiding",
+            "values": { "guilt": 3, "helpfulness": 2 },
+            "inventory": {
+              "items": [
+                { "id": "frayed_rope", "name": "断麻绳", "quantity": 1 },
+                { "id": "tool_roll", "name": "修井工具卷", "quantity": 1 }
+              ]
+            },
+            "notes": "修井人。留下断麻绳，不是偷灯芯的人。"
+          },
+          {
+            "id": "npcstate_silverdot",
+            "npcId": "npc_silverdot",
+            "name": "银点",
+            "isPlayer": false,
+            "sceneId": "scene_old_mill",
+            "status": "frightened",
+            "values": { "trust": 0, "panic": 3 },
+            "notes": "小井灯精。把灯芯藏在旧磨坊水轮后，动机是保护裂开的灯座。"
+          }
+        ]
+      },
+      {
+        "name": "scene_records",
+        "fields": [
+          { "name": "sceneId", "type": "text", "required": true },
+          { "name": "title", "type": "text" },
+          { "name": "summary", "type": "text" },
+          { "name": "visibleClues", "type": "json" },
+          { "name": "nextBeats", "type": "json" }
+        ],
+        "seedRecords": [
+          {
+            "id": "scene_moonwell_square",
+            "sceneId": "scene_moonwell_square",
+            "title": "月井村中央",
+            "summary": "井灯熄灭，井口有银色蛾粉、湿脚印、断麻绳和一圈薄雾。",
+            "visibleClues": ["银色蛾粉", "湿脚印通向旧磨坊", "新断的麻绳", "空灯罩没有破裂"],
+            "nextBeats": ["观察井口", "询问莓婆婆或小砚", "沿脚印去旧磨坊"]
+          },
+          {
+            "id": "scene_old_mill",
+            "sceneId": "scene_old_mill",
+            "title": "旧磨坊",
+            "summary": "水轮停在半转的位置，木门虚掩，墙缝里有冷银色微光。",
+            "visibleClues": ["水轮后的干燥夹层", "缺齿铜锁", "灰砾的工具痕", "银蛾聚集"],
+            "nextBeats": ["打开侧门", "安抚银蛾", "找灰砾问清修灯座的事"]
+          }
+        ]
+      },
+      {
+        "name": "map_structured_states",
+        "fields": [
+          { "name": "mapId", "type": "text", "required": true },
+          { "name": "title", "type": "text" },
+          { "name": "areas", "type": "json" },
+          { "name": "routes", "type": "json" },
+          { "name": "objects", "type": "json" },
+          { "name": "hazards", "type": "json" }
+        ],
+        "seedRecords": [
+          {
+            "id": "map_moonwell_village",
+            "mapId": "map_moonwell_village",
+            "title": "月井村入门地图",
+            "areas": [
+              { "id": "well_square", "name": "月井村中央", "sceneId": "scene_moonwell_square" },
+              { "id": "old_mill", "name": "旧磨坊", "sceneId": "scene_old_mill" },
+              { "id": "reed_path", "name": "芦苇小路" },
+              { "id": "storage_shed", "name": "修井棚" }
+            ],
+            "routes": [
+              { "from": "well_square", "to": "old_mill", "state": "湿脚印清楚" },
+              { "from": "well_square", "to": "reed_path", "state": "薄雾较重" },
+              { "from": "old_mill", "to": "storage_shed", "state": "门闩松动" }
+            ],
+            "objects": [
+              { "id": "moonwell_lamp", "name": "空井灯", "location": "well_square" },
+              { "id": "broken_rope", "name": "断麻绳", "location": "well_square" },
+              { "id": "waterwheel", "name": "旧水轮", "location": "old_mill" },
+              { "id": "lamp_wick", "name": "月井灯芯", "location": "old_mill", "hidden": true }
+            ],
+            "hazards": [
+              { "id": "moon_fog", "name": "绕路薄雾", "severity": 1, "counter": "白粉笔或小提灯" },
+              { "id": "slick_stone", "name": "湿滑石阶", "severity": 1, "counter": "慢走或观察" }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "scene_map_mounts",
+        "fields": [
+          { "name": "sceneId", "type": "text", "required": true },
+          { "name": "mapId", "type": "text", "required": true },
+          { "name": "isActive", "type": "boolean" }
+        ],
+        "seedRecords": [
+          {
+            "id": "mount_moonwell_square_map",
+            "sceneId": "scene_moonwell_square",
+            "mapId": "map_moonwell_village",
+            "isActive": true
+          },
+          {
+            "id": "mount_old_mill_map",
+            "sceneId": "scene_old_mill",
+            "mapId": "map_moonwell_village",
+            "isActive": true
+          }
+        ]
+      },
+      {
+        "name": "quest_records",
+        "fields": [
+          { "name": "questId", "type": "text", "required": true },
+          { "name": "title", "type": "text" },
+          { "name": "status", "type": "text" },
+          { "name": "objectives", "type": "json" },
+          { "name": "clues", "type": "json" },
+          { "name": "progress", "type": "integer" }
+        ],
+        "seedRecords": [
+          {
+            "id": "quest_moonwell_wick",
+            "questId": "quest_moonwell_wick",
+            "title": "找回月井灯芯",
+            "status": "active",
+            "objectives": [
+              "检查月井边的痕迹",
+              "确认灯芯去向",
+              "在月升前找回或修复灯芯",
+              "让井灯重新安全亮起"
+            ],
+            "clues": ["银色蛾粉", "湿脚印", "断麻绳", "旧磨坊方向"],
+            "progress": 1
+          }
+        ]
+      },
+      {
+        "name": "beginner_rule_cards",
+        "fields": [
+          { "name": "ruleId", "type": "text", "required": true },
+          { "name": "title", "type": "text" },
+          { "name": "content", "type": "text" },
+          { "name": "examples", "type": "json" }
+        ],
+        "seedRecords": [
+          {
+            "id": "rule_three_actions",
+            "ruleId": "rule_three_actions",
+            "title": "新手三类行动",
+            "content": "玩家不知道做什么时，GM 提供观察、询问、使用物品三类方向。",
+            "examples": ["观察井口", "询问莓婆婆", "使用白粉笔标记脚印"]
+          },
+          {
+            "id": "rule_fail_forward",
+            "ruleId": "rule_fail_forward",
+            "title": "失败推进",
+            "content": "失败不让故事停住，只增加代价、风险或新信息。",
+            "examples": ["脚下一滑但抓住井沿，同时发现石缝里的银粉", "钥匙没立刻打开门，但露出缺齿锁的规律"]
+          }
+        ]
+      },
+      {
+        "name": "beginner_reference_texts",
+        "fields": [
+          { "name": "referenceId", "type": "text", "required": true },
+          { "name": "title", "type": "text" },
+          { "name": "category", "type": "text" },
+          { "name": "appliesTo", "type": "json" },
+          { "name": "fields", "type": "json" },
+          { "name": "content", "type": "text" },
+          { "name": "toolUsage", "type": "text" }
+        ],
+        "seedRecords": [
+          {
+            "id": "ref_beginner_usage",
+            "referenceId": "ref_beginner_usage",
+            "title": "新手范例参考文本使用规则",
+            "category": "tool-guidance",
+            "appliesTo": ["GM", "item_registry", "mechanics_registry", "numericValues"],
+            "fields": ["difficulty", "severity", "trust", "panic", "resourceCost"],
+            "content": "凡是要给难度、危险、NPC态度、物品效果或资源消耗写数值，先看本集合。参考文本是量尺，不是要求每句话都数值化；已有背包、状态栏或数据库字段时，以现有数据为准。",
+            "toolUsage": "调用工具生成 numericValues 时，将相关记录作为 referenceText 或 quantificationDefinition.referenceDocuments 传入。"
+          },
+          {
+            "id": "ref_beginner_difficulty",
+            "referenceId": "ref_beginner_difficulty",
+            "title": "新手难度与失败推进量尺",
+            "category": "difficulty-scale",
+            "appliesTo": ["action_resolver", "scene", "quest"],
+            "fields": ["difficulty", "focusCost", "riskLevel"],
+            "content": "难度0=无需判定，直接成功；1=轻微阻碍，例如看清脚印、问到公开信息；2=需要方法或物品，例如开缺齿锁、安抚受惊银蛾；3=明显风险，例如薄雾中追踪、滑石上搬灯座；4=本范例最高风险，只能作为结尾危机或严重失误。失败不让玩家卡死，只增加时间、消耗1点专注/好运、NPC更紧张，或暴露新线索。",
+            "toolUsage": "若工具需要 difficulty/riskLevel，优先使用0-4，不要生成高压战斗数值。"
+          },
+          {
+            "id": "ref_beginner_item_effects",
+            "referenceId": "ref_beginner_item_effects",
+            "title": "新手物品效果量尺",
+            "category": "item-scale",
+            "appliesTo": ["item_use", "slot_use", "item_registry"],
+            "fields": ["powerScore", "uses", "focusCost", "trustDelta"],
+            "content": "小提灯 powerScore=1，只提供照明/退雾，不造成伤害；月火柴 powerScore=2，每根使用1次，可吸引银蛾或检查灯芯；温面包 powerScore=1，可让紧张NPC或小生灵敌意下降1级；白粉笔 powerScore=1，可标记路线、避免迷路；旧铜钥匙 powerScore=1，只能尝试打开旧磨坊侧门，失败时给缺齿锁线索。",
+            "toolUsage": "背包直接使用物品时，如果物品无明确 use 字段，应告诉玩家暂时用不上；有 use 字段则按这里的低强度效果结算。"
+          },
+          {
+            "id": "ref_beginner_npc_state",
+            "referenceId": "ref_beginner_npc_state",
+            "title": "NPC信任、恐慌、线索量尺",
+            "category": "npc-scale",
+            "appliesTo": ["npc_state", "relationship", "persuasion"],
+            "fields": ["trust", "fear", "panic", "clueProgress"],
+            "content": "NPC trust/fear/panic 使用0-4：0无，1轻微，2明显，3强烈，4临界。莓婆婆初始信任3、耐心4；小砚信任1、害怕1，温和询问可让信任+1；银点恐慌3，安抚/温面包/承诺修灯座可让恐慌-1或-2。线索进度0=未知，1=有方向，2=确认地点，3=确认真相，4=完成结算。",
+            "toolUsage": "修改 NPC 状态或关系时只改1-2点；不要因为一句话直接拉满信任或恐慌清零。"
+          }
+        ]
+      },
+      {
+        "name": "reference_texts",
+        "fields": [
+          { "name": "referenceId", "type": "text", "required": true },
+          { "name": "title", "type": "text" },
+          { "name": "category", "type": "text" },
+          { "name": "appliesTo", "type": "json" },
+          { "name": "fields", "type": "json" },
+          { "name": "priority", "type": "integer" },
+          { "name": "content", "type": "text" },
+          { "name": "toolUsage", "type": "text" }
+        ],
+        "seedRecords": [
+          {
+            "id": "ref_moonwell_usage",
+            "referenceId": "ref_moonwell_usage",
+            "title": "月井失灯参考文本使用规则",
+            "category": "tool-guidance",
+            "appliesTo": ["GM", "action_resolver", "item_use", "slot_use", "npc_state", "mechanics_registry", "numericValues"],
+            "fields": ["difficulty", "riskLevel", "powerScore", "trust", "panic", "resourceCost", "rewardScore"],
+            "priority": 100,
+            "content": "本集合是《月井失灯》的数值量尺，会随角色初始设定克隆到每个聊天工作数据库。凡是 GM、工具或调试 API 要写入 difficulty、riskLevel、powerScore、trust、panic、resourceCost、rewardScore 或 numericValues，先读取这里。参考文本不是剧情事实，也不是要求每轮都数值化；已有背包、状态栏、任务进度、NPC 状态和当前聊天数据库记录时，以现有记录优先。",
+            "toolUsage": "在调用 system.item_registry.*、system.mechanics_registry.*、system.action_resolver.* 或调试工具生成 numericValues 时，把相关记录作为 referenceText，或放入 quantificationDefinition.referenceDocuments。没有命中参考文本时取保守低值，并在 reason/audit 中说明。"
+          },
+          {
+            "id": "ref_moonwell_action_difficulty",
+            "referenceId": "ref_moonwell_action_difficulty",
+            "title": "行动难度与失败推进量尺",
+            "category": "difficulty-scale",
+            "appliesTo": ["action_resolver", "quest", "scene", "environment"],
+            "fields": ["difficulty", "riskLevel", "focusCost", "successBand"],
+            "priority": 90,
+            "content": "本范例是低压新手冒险，难度只用 0-4。0=无需判定，直接成功，例如查看背包、听完公开说明、拿起地上的普通线索。1=轻微阻碍，例如看清湿脚印、发现银蛾粉、问到公开信息。2=需要方法或物品，例如开旧磨坊缺齿锁、安抚受惊银蛾、在薄雾里保持方向。3=明显风险，例如滑石上搬灯座、雾里追踪错误路线、急躁逼问导致 NPC 隐瞒。4=本范例最高风险，只能用于结尾危机或严重失误，不用于普通调查。失败不让玩家卡死，只增加时间、消耗 1 点专注/好运、让 NPC 更紧张，或暴露新线索。",
+            "toolUsage": "若工具需要 difficulty/riskLevel，优先填 0-4；不要生成高压战斗难度、死亡惩罚或不可逆失败。focusCost 通常 0 或 1，只有连续冒险或结尾危机才到 2。"
+          },
+          {
+            "id": "ref_moonwell_item_scale",
+            "referenceId": "ref_moonwell_item_scale",
+            "title": "新手物品效果量尺",
+            "category": "item-scale",
+            "appliesTo": ["item_use", "slot_use", "item_registry", "inventory"],
+            "fields": ["powerScore", "uses", "focusCost", "trustDelta", "clueProgress"],
+            "priority": 85,
+            "content": "小提灯 powerScore=1，只能照亮近处、让薄雾退开一小段，不造成伤害。月火柴 powerScore=2，每根使用 1 次，可吸引银蛾、检查灯芯余烬或短暂稳定井灯。温面包 powerScore=1，可让紧张 NPC 或小生灵敌意下降 1 级，不能强制说出秘密。白粉笔 powerScore=1，可标记路线、圈出脚印、避免迷路。旧铜钥匙 powerScore=1，只能尝试打开旧磨坊侧门；失败时给缺齿锁线索，不应变成万能钥匙。",
+            "toolUsage": "背包直接使用物品时，有 use 字段就按这里的低强度效果结算；无 use 字段或当前场景不适用时，委婉告诉玩家这个物品暂时在背包里用不了。不要把普通物品量化成攻击、治疗或永久加成。"
+          },
+          {
+            "id": "ref_moonwell_npc_attitude",
+            "referenceId": "ref_moonwell_npc_attitude",
+            "title": "NPC信任、恐慌与线索量尺",
+            "category": "npc-scale",
+            "appliesTo": ["npc_state", "relationship", "persuasion", "quest"],
+            "fields": ["trust", "fear", "panic", "clueProgress"],
+            "priority": 80,
+            "content": "NPC trust/fear/panic 使用 0-4：0 无，1 轻微，2 明显，3 强烈，4 临界。莓婆婆初始信任 3、耐心 4，合理询问不需要判定。小砚初始信任 1、害怕 1，温和询问或给明确保护可让信任 +1。灰砾初始隐瞒 2、愧疚 2，给台阶或指出证据可让隐瞒 -1。银点初始恐慌 3，安抚、温面包、承诺修灯座可让恐慌 -1 或 -2。线索进度 0=未知，1=有方向，2=确认地点，3=确认真相，4=完成结算。",
+            "toolUsage": "修改 NPC 状态或关系时通常只改 1 点，强匹配物品/行动最多改 2 点；不要因为一句话直接拉满信任或清零恐慌。"
+          },
+          {
+            "id": "ref_moonwell_resource_cost",
+            "referenceId": "ref_moonwell_resource_cost",
+            "title": "资源消耗与状态变化量尺",
+            "category": "resource-scale",
+            "appliesTo": ["resource", "effect_settlement", "action_resolver", "inventory"],
+            "fields": ["focusCost", "luckCost", "hpDelta", "conditionSeverity"],
+            "priority": 75,
+            "content": "阿芦是新手主角，HP 16、专注 6、好运 2。普通调查不消耗资源；需要集中注意力的行动消耗专注 1；危险或赶时间的二次尝试可消耗专注 2 或好运 1。HP 损失只用于明显身体风险，轻微擦伤 1-2，摔落或被机关夹到 3-4，本范例不应出现致命伤害。条件标签保持短小，例如初来乍到、手持小提灯、被薄雾绕路、银蛾跟随。",
+            "toolUsage": "资源结算优先 patch npc_structured_states.resources/statusBar。不要为普通对话扣 HP；不要把失败写成死局，优先扣专注、增加时间或改变 NPC 态度。"
+          },
+          {
+            "id": "ref_moonwell_reward_progress",
+            "referenceId": "ref_moonwell_reward_progress",
+            "title": "奖励、任务进度与结局量尺",
+            "category": "reward-scale",
+            "appliesTo": ["quest", "inventory", "scene", "rag"],
+            "fields": ["rewardScore", "clueProgress", "questProgress", "trustDelta"],
+            "priority": 70,
+            "content": "本范例奖励以教学反馈为主，不给神器或大额财富。小发现 rewardScore=1，例如确认脚印方向、得到一句证词、标记路线。关键发现 rewardScore=2，例如找到灯芯藏处、确认灰砾不是反派、知道银点动机。完成任务 rewardScore=3，可获得莓婆婆感谢、村中信任 +1、月井小护符或后续委托入口。任务 progress 0-4：0 未开始，1 已检查井边，2 已到旧磨坊，3 已确认真相，4 灯芯安全复位。",
+            "toolUsage": "任务完成后把 quest_records.status 改为 completed 或归档摘要，避免完成事件继续占 active。奖励必须具体入账，但保持低压、短期、可解释。"
+          }
+        ]
+      }
+    ]
+  },
+  "resources": {
+    "globalData": {
+      "collections": [
+        {
+          "collection": "npc_relation_nodes",
+          "records": [
+            {
+              "id": "pc_alu",
+              "npcId": "pc_alu",
+              "name": "阿芦",
+              "tags": ["player", "beginner"],
+              "summary": "第一次独立处理村中小事件的年轻巡路人。"
+            },
+            {
+              "id": "npc_granny_mei",
+              "npcId": "npc_granny_mei",
+              "name": "莓婆婆",
+              "tags": ["village elder"],
+              "summary": "月井村村长，焦急但愿意说明情况。"
+            },
+            {
+              "id": "npc_xiaoyan",
+              "npcId": "npc_xiaoyan",
+              "name": "小砚",
+              "tags": ["apprentice", "witness"],
+              "summary": "看见银蛾飞向旧磨坊的学徒。"
+            },
+            {
+              "id": "npc_grit",
+              "npcId": "npc_grit",
+              "name": "灰砾",
+              "tags": ["repairer", "red herring"],
+              "summary": "私自修过灯座的修井人，留下断麻绳。"
+            },
+            {
+              "id": "npc_silverdot",
+              "npcId": "npc_silverdot",
+              "name": "银点",
+              "tags": ["spirit", "truth holder"],
+              "summary": "小井灯精，因害怕灯座裂开而藏起灯芯。"
+            }
+          ]
+        },
+        {
+          "collection": "npc_relation_edges",
+          "records": [
+            {
+              "id": "rel_mei_alu",
+              "sourceNpcId": "npc_granny_mei",
+              "targetNpcId": "pc_alu",
+              "relation": "委托与信任",
+              "weight": 3
+            },
+            {
+              "id": "rel_xiaoyan_alu",
+              "sourceNpcId": "npc_xiaoyan",
+              "targetNpcId": "pc_alu",
+              "relation": "想帮忙但害羞",
+              "weight": 1
+            },
+            {
+              "id": "rel_grit_mei",
+              "sourceNpcId": "npc_grit",
+              "targetNpcId": "npc_granny_mei",
+              "relation": "隐瞒修井失误",
+              "weight": -1
+            },
+            {
+              "id": "rel_silverdot_alu",
+              "sourceNpcId": "npc_silverdot",
+              "targetNpcId": "pc_alu",
+              "relation": "害怕但可被安抚",
+              "weight": 0
+            }
+          ]
+        },
+        {
+          "collection": "faction_nodes",
+          "records": [
+            {
+              "id": "faction_moonwell_village",
+              "factionId": "faction_moonwell_village",
+              "name": "月井村",
+              "kind": "village",
+              "summary": "依靠井灯指路的小村。"
+            },
+            {
+              "id": "faction_well_keepers",
+              "factionId": "faction_well_keepers",
+              "name": "守井人",
+              "kind": "caretakers",
+              "summary": "负责修井、补灯、维护井路。"
+            },
+            {
+              "id": "faction_moth_court",
+              "factionId": "faction_moth_court",
+              "name": "银蛾小庭",
+              "kind": "spirits",
+              "summary": "围绕月井灯活动的小生灵。"
+            }
+          ]
+        },
+        {
+          "collection": "faction_edges",
+          "records": [
+            {
+              "id": "fedge_village_keepers",
+              "sourceFactionId": "faction_moonwell_village",
+              "targetFactionId": "faction_well_keepers",
+              "relation": "依赖维护",
+              "tension": 1
+            },
+            {
+              "id": "fedge_keepers_moths",
+              "sourceFactionId": "faction_well_keepers",
+              "targetFactionId": "faction_moth_court",
+              "relation": "互相误解",
+              "tension": 2
+            }
+          ]
+        },
+        {
+          "collection": "faction_memberships",
+          "records": [
+            {
+              "id": "fm_mei_village",
+              "factionId": "faction_moonwell_village",
+              "actorId": "npc_granny_mei",
+              "role": "村长"
+            },
+            {
+              "id": "fm_grit_keepers",
+              "factionId": "faction_well_keepers",
+              "actorId": "npc_grit",
+              "role": "修井人"
+            },
+            {
+              "id": "fm_silverdot_moths",
+              "factionId": "faction_moth_court",
+              "actorId": "npc_silverdot",
+              "role": "井灯精"
+            }
+          ]
+        },
+        {
+          "collection": "beginner_lore_notes",
+          "records": [
+            {
+              "id": "note_tone",
+              "title": "范例语气",
+              "summary": "面向新手时，每轮最多给四个方向，并把物品、线索、NPC 态度写清楚。"
+            },
+            {
+              "id": "note_resolution",
+              "title": "推荐结局",
+              "summary": "玩家发现银点不是敌人后，可用温面包、安抚、修灯座或承诺请灰砾修复来换回灯芯。"
+            }
+          ]
+        }
+      ]
+    },
+    "runtimeRag": {
+      "collections": [
+        {
+          "collection": "beginner-moonwell-lore",
+          "documents": [
+            {
+              "id": "moonwell_truth",
+              "text": "《月井失灯》真相：灯芯被小井灯精银点藏到旧磨坊水轮后。银点不是反派，它发现井灯灯座裂开，担心继续燃烧会伤到月井。断麻绳来自修井人灰砾，湿脚印和银蛾粉指向旧磨坊。",
+              "metadata": {
+                "sourceId": "beginner-moonwell-truth",
+                "topic": "truth",
+                "importance": 5
+              }
+            },
+            {
+              "id": "moonwell_teaching_flow",
+              "text": "新手教学节奏：开局让玩家观察井口；随后鼓励询问 NPC 或使用背包；第三步移动到旧磨坊；第四步给轻微阻碍；第五步用观察、交涉、巧手或安抚解决；最后让井灯重新亮起。",
+              "metadata": {
+                "sourceId": "beginner-moonwell-flow",
+                "topic": "gm-guide",
+                "importance": 4
+              }
+            },
+            {
+              "id": "moonwell_fail_forward",
+              "text": "失败推进规则：不要让玩家因为一次失败卡死。失败可以带来资源消耗、NPC 更紧张、薄雾靠近或多花时间，但必须同时给出新信息或新的可行动方向。",
+              "metadata": {
+                "sourceId": "beginner-moonwell-rules",
+                "topic": "rule",
+                "importance": 4
+              }
+            },
+            {
+              "id": "moonwell_reference_texts",
+              "text": "《月井失灯》参考文本：标准聊天数据库集合是 reference_texts，兼容集合是 beginner_reference_texts。难度0-4，0直接成功，1轻微阻碍，2需要方法或物品，3明显风险，4只用于结尾危机。物品强度保持低压：小提灯退雾不伤害；月火柴一次性吸引银蛾或检查灯芯；温面包降低敌意；白粉笔标路；旧铜钥匙只尝试开侧门。NPC信任/恐慌0-4，每次通常只变化1-2点。生成 numericValues 前先用 reference_texts，不要凭形容词生成过强数值。",
+              "metadata": {
+                "sourceId": "beginner-moonwell-reference-texts",
+                "topic": "numeric-reference",
+                "importance": 5
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

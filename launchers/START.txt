@@ -1,0 +1,38 @@
+AI DND launchers
+
+Windows:
+  Double-click launchers\start-windows.cmd
+  Or run quick-start.cmd from the project root.
+
+macOS:
+  Double-click launchers/start-macos.command
+  Or run ./quick-start.command from Terminal.
+  If macOS says the file is not executable, run:
+    chmod +x quick-start.command launchers/start-macos.command
+
+Linux:
+  Run ./launchers/start-linux.sh
+  Or run ./quick-start.sh from a terminal.
+  If your file manager refuses to run it, run:
+    chmod +x quick-start.sh launchers/start-linux.sh
+
+Requirements:
+  Node.js 24 or newer, or network access for first-run local Node.js setup.
+
+Windows Node update:
+  Check your version with:
+    node -v
+  If it prints v22.x or lower, update Node.js itself, not npm.
+  Recommended: install the Node.js 24+ Windows Installer from https://nodejs.org/
+  Do not use npm install -g npm for this project.
+
+Automatic local Node setup:
+  If Node.js 24+ is missing, or .runtime/node belongs to a different OS/CPU,
+  the launcher downloads the official Node.js 24 package for the current platform
+  into .runtime/node inside this folder and runs the app with that local node.
+  It does not install Node globally.
+
+Source packages install npm dependencies inside this folder on first launch when node_modules is missing.
+If node_modules was copied from another OS, delete node_modules and launch again to reinstall locally.
+The launcher keeps npm cache and temp files under .npm-cache/ and .npm-tmp/.
+Full packages include node_modules and start from prebuilt JavaScript, so platform-specific TypeScript/esbuild dev tools are not used at runtime.

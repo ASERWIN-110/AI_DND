@@ -1,0 +1,25 @@
+{
+  "package": "八荒RPG SillyTavern无AuthorNote版",
+  "generated_at": "2026-05-25T15:46:17.855Z",
+  "based_on": "SillyTavern导入版_八荒RPG",
+  "character_cards": [
+    "角色卡/八荒GM_v3_低token_内嵌System版.json",
+    "角色卡/八荒GM_v3_低token版.json",
+    "角色卡/八荒GM_低token兼容版.json"
+  ],
+  "worldbooks": [
+    "世界书/八荒RPG世界书_低token版.json"
+  ],
+  "system_prompts": [
+    "SystemPrompt/八荒系统提示词_低token版.txt"
+  ],
+  "authors_notes": [],
+  "rag_event_files": 79,
+  "rag_index": "RAG事件库索引.txt",
+  "notes": "无AuthorNote版：硬规则在角色卡/System；当前状态靠每轮【状态记录】维护。RAG非I/T/F活跃事件只作示例生成。",
+  "worldbook_entries": 92,
+  "added_adult_event_files": 14,
+  "troubleshooting": "加载检查与故障排查.txt",
+  "rag_usage_policy": "I/T/current-F are canonical or must-trigger; all other RAG entries are examples to transform, not scripts to copy.",
+  "status_policy": "No Author Note or scripts. The latest visible 【状态记录】 at the end of each GM reply is the current state source."
+}

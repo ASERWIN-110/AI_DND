@@ -1,0 +1,102 @@
+# 物品
+用途：写入 item_registry。物品按事实/边界/玩法整理，未知物先入未鉴定状态，不能凭空给完整能力。
+
+## 下品灵石 [item_low_spirit_stone]
+分类：currency
+稀有度：common
+关键词：八荒、currency
+事实：修仙世界常用低阶货币，用于采购、押金、人情和任务结算。
+边界：按当前库存、鉴定、认主、消耗和工具裁决处理。
+玩法/效果：小额采购可直接结算；大额支取会留下账目、关注或人情债。
+数值：{"valueScore":1}
+来源：chc/RPG配置
+
+## 巡海任务令 [item_patrol_token]
+分类：document
+稀有度：common
+关键词：八荒、document
+事实：碧水宫外门或任务堂发放的临时任务凭证。
+边界：按当前库存、鉴定、认主、消耗和工具裁决处理。
+玩法/效果：可作为合法离宗、登船、进入外岛任务线的理由。
+数值：{"valueScore":2}
+来源：chc/RPG配置
+
+## 低阶符箓 [item_common_talisman]
+分类：consumable
+稀有度：uncommon
+关键词：八荒、consumable
+事实：一次性符箓，常见用途包括避水、传信、警戒、替身或短距遮掩。
+边界：按当前库存、鉴定、认主、消耗和工具裁决处理。
+玩法/效果：按具体符箓效果消耗；通常只给 +1/+2 条件，不长期常驻。
+数值：{"powerScore":2,"charges":1}
+来源：chc/RPG配置
+
+## 低阶丹药 [item_basic_pill]
+分类：consumable
+稀有度：uncommon
+关键词：八荒、consumable
+事实：恢复、解毒、稳心或辅助修炼的常见丹药。
+边界：按当前库存、鉴定、认主、消耗和工具裁决处理。
+玩法/效果：使用后应扣除库存；强效果需要副作用、冷却或炼化条件。
+数值：{"powerScore":2,"charges":1}
+来源：chc/RPG配置
+
+## 普通灵材包 [item_spirit_material_pack]
+分类：material
+稀有度：common
+关键词：八荒、material
+事实：可合并计数的低阶灵材，不应逐条挤占状态栏。
+边界：按当前库存、鉴定、认主、消耗和工具裁决处理。
+玩法/效果：用于炼丹、炼器、修复法器或任务交付；普通材料按批次消耗。
+数值：{"valueScore":2}
+来源：chc/RPG配置
+
+## 碧水宫内门弟子法袍 [item_bishui_inner_robe]
+分类：clothing
+稀有度：uncommon
+关键词：八荒、clothing
+事实：李寻道开局资源之一，领口内侧有“研”字针脚。
+边界：按当前库存、鉴定、认主、消耗和工具裁决处理。
+玩法/效果：提供身份识别和轻微礼法便利；不能当护甲硬吃攻击。
+数值：{"valueScore":3,"socialBonus":1}
+来源：chc/RPG配置
+
+## 沧海横流诀手抄本前六页 [item_canghai_pages]
+分类：manual
+稀有度：rare
+关键词：八荒、manual
+事实：清研字迹的水法手抄残页，写到第六页后中断。
+边界：不得作为无代价开局可用神器
+玩法/效果：可作为修行、鉴定、旧事追查和水法成长入口；不能直接当完整天阶功法。
+数值：{"valueScore":5}
+来源：chc/RPG配置
+
+## 水灵玉佩 [item_water_jade_pendant]
+分类：accessory
+稀有度：rare
+关键词：八荒、accessory
+事实：李寻道十二岁引气成功时清研所赠玉佩。
+边界：不得作为无代价开局可用神器
+玩法/效果：公开效果是定位与护身；隐藏上可能连接首饰灵丝，应以未鉴定状态逐步揭露。
+数值：{"powerScore":3,"valueScore":5}
+来源：chc/RPG配置
+
+## 制式水纹短剑 [item_water_pattern_short_sword]
+分类：weapon
+稀有度：common
+关键词：八荒、weapon
+事实：碧水宫外门考核用短剑。
+边界：按当前库存、鉴定、认主、消耗和工具裁决处理。
+玩法/效果：普通近战/仪式武器；低阶水行术可作为引导物，战斗加值不超过 +1。
+数值：{"attackBonus":1,"valueScore":2}
+来源：chc/RPG配置
+
+## 蜃楼城拍品目录 [item_auction_catalogue]
+分类：document
+稀有度：uncommon
+关键词：八荒、document
+事实：地下拍卖或黑市寄售的物品线索目录。
+边界：按当前库存、鉴定、认主、消耗和工具裁决处理。
+玩法/效果：可提供物品名、估价、卖家遮掩和尾随风险；不直接证明真伪。
+数值：{"valueScore":2}
+来源：chc/RPG配置

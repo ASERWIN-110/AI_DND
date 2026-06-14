@@ -1,0 +1,101 @@
+# 特殊物品
+用途：写入 special_item_registry。物品按事实/边界/玩法整理，未知物先入未鉴定状态，不能凭空给完整能力。
+
+## 封印潮骨器胚 [special_tide_bone_core]
+分类：sealed-relic
+稀有度：rare
+关键词：八荒、special、sealed-relic
+事实：水行成长型器胚，初始应作为未鉴定或封印物，不直接给完整能力。
+边界：必须带代价、风险、追踪、污染、冷却或反制；默认状态=dormant_or_unidentified
+玩法/效果：可牵引水雾、干扰御器或作为水法成长线索；每次使用应检查认主、封印、污染、追踪或反制。
+数值：{"powerScore":5,"valueScore":6}
+关联：map_bishui_palace
+来源：chc/RPG配置/世界书/RAG事件库
+
+## 天阶水法残篇 [special_heaven_water_fragment]
+分类：cultivation-fragment
+稀有度：rare
+关键词：八荒、special、cultivation-fragment
+事实：高阶水法残篇，不能开局直接当完整功法。
+边界：必须带代价、风险、追踪、污染、冷却或反制；默认状态=dormant_or_unidentified
+玩法/效果：需要鉴定、拼合、导师点拨、闭关或实战事件才能转为稳定技能/专长。
+数值：{"valueScore":6}
+关联：map_bishui_palace
+来源：chc/RPG配置/世界书/RAG事件库
+
+## 母珠/禁器网络 [special_mother_bead_network]
+分类：forbidden-art-device
+稀有度：artifact
+关键词：八荒、special、forbidden-art-device
+事实：禁器暗线核心概念，只能通过权限、污染、反制和事件后果表达。
+边界：必须带代价、风险、追踪、污染、冷却或反制；默认状态=dormant_or_unidentified
+玩法/效果：不能作为无代价控制工具；涉及控制、人格或傀儡时只做非露骨风险和状态结算。
+数值：{"powerScore":9,"valueScore":9}
+关联：faction_forbidden_network
+来源：chc/RPG配置/世界书/RAG事件库
+
+## 锁星扣 [special_star_lock]
+分类：sealed-focus
+稀有度：rare
+关键词：八荒、special、sealed-focus
+事实：与星命、封锁、观测相关的特殊器物。
+边界：必须带代价、风险、追踪、污染、冷却或反制；默认状态=dormant_or_unidentified
+玩法/效果：适合做条件事件、观测风险、封印条件或人格状态机锚点；不得提前覆盖角色开局态。
+数值：{"powerScore":6,"valueScore":6}
+关联：faction_lingxiao
+来源：chc/RPG配置/世界书/RAG事件库
+
+## 镜月残钥 [special_mirror_moon_key]
+分类：dream-key
+稀有度：rare
+关键词：八荒、special、dream-key
+事实：镜月天、梦境或守阁人线索的入口物。
+边界：必须带代价、风险、追踪、污染、冷却或反制；默认状态=dormant_or_unidentified
+玩法/效果：用于打开梦境、镜像或记忆场景；真相逐步显现，不直接替玩家选择。
+数值：{"powerScore":5,"valueScore":5}
+关联：map_jingyue_sky
+来源：chc/RPG配置/世界书/RAG事件库
+
+## 水灵玉佩定位锚 [special_water_spirit_jade_anchor]
+分类：tracking-anchor
+稀有度：rare
+关键词：八荒、special、tracking-anchor
+事实：水灵玉佩的隐藏层：可能与清研首饰灵丝或碧水宫监测有关。
+边界：必须带代价、风险、追踪、污染、冷却或反制；默认状态=dormant_or_unidentified
+玩法/效果：未鉴定前只表现为护身与定位；调查后可转入追踪、反追踪或断链事件。
+数值：{"powerScore":4,"valueScore":5}
+关联：bahuang-rag-events
+来源：chc/RPG配置/世界书/RAG事件库
+
+## 霜天剑 [special_frost_sky_sword]
+分类：signature-weapon
+稀有度：rare
+关键词：八荒、special、signature-weapon
+事实：婉悦的身份锚点与剑首象征，失踪或空鞘本身就是线索。
+边界：必须带代价、风险、追踪、污染、冷却或反制；默认状态=dormant_or_unidentified
+玩法/效果：可作为反抗、身份恢复或剑修试炼入口；不能随意掉落成普通战利品。
+数值：{"powerScore":5,"valueScore":6}
+关联：org_guichen
+来源：chc/RPG配置/世界书/RAG事件库
+
+## 照雪刀 [special_zhaoxue_blade]
+分类：signature-weapon
+稀有度：rare
+关键词：八荒、special、signature-weapon
+事实：方瑶光的刀修身份锚点。
+边界：必须带代价、风险、追踪、污染、冷却或反制；默认状态=dormant_or_unidentified
+玩法/效果：适合破招、斩断术式、追查符灰；若与灵骸甲线结合需登记穿戴/控制风险。
+数值：{"powerScore":6,"valueScore":6}
+关联：org_lingxiao
+来源：chc/RPG配置/世界书/RAG事件库
+
+## 符灰渗透痕迹 [special_forbidden_dust]
+分类：forbidden-trace
+稀有度：uncommon
+关键词：八荒、special、forbidden-trace
+事实：某人长期布设的微弱禁术痕迹，常附着在石板、门扉、器物或指尖。
+边界：必须带代价、风险、追踪、污染、冷却或反制；默认状态=dormant_or_unidentified
+玩法/效果：用于追踪渗透、识别旧案和触发某人归档；单独不能证明完整真相。
+数值：{"valueScore":4}
+关联：faction_forbidden_network
+来源：chc/RPG配置/世界书/RAG事件库

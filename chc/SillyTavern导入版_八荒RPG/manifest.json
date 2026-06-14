@@ -1,0 +1,21 @@
+{
+  "package": "八荒RPG SillyTavern导入版",
+  "generated_at": "2026-05-25T15:32:37.632Z",
+  "character_cards": [
+    "角色卡/八荒GM_v3_导入版.json",
+    "角色卡/八荒GM_兼容版.json"
+  ],
+  "worldbooks": [
+    "世界书/八荒RPG世界书_导入版.json"
+  ],
+  "system_prompts": [
+    "SystemPrompt/八荒系统提示词_导入版.txt"
+  ],
+  "authors_notes": [
+    "作者注释/八荒作者注释_导入版.txt",
+    "作者注释/八荒作者注释_禁术用户_可选.txt"
+  ],
+  "rag_event_files": 65,
+  "rag_index": "RAG事件库索引.txt",
+  "worldbook_entries": 88
+}

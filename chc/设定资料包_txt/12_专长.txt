@@ -1,0 +1,72 @@
+# 专长
+用途：写入 feat_registry。专长是长期能力或主角气运，不是剧情免死金牌；强效果必须有成本和后果。
+
+## 逆命潮种 [feat_luck_tide_seed]
+分类：fortune
+阶级：legendary
+事实：李寻道可选主角气运。
+边界/效果：危局、冷场、越境或成长节点可提供一次机缘入口，但必须伴随封印、追踪、债务、污染或竞争者。
+关联技能：skill_basic_water_control
+数值：{"conditionBonus":2}
+来源：chc/视角模板/RAG事件库
+
+## 破妄雷心 [feat_thunder_heart]
+分类：fortune
+阶级：epic
+事实：方澜可选主角气运。
+边界/效果：适合识破遮掩、预警危险和破除迷障；不能让角色全知。
+关联技能：skill_star_observation
+数值：{"conditionBonus":2}
+来源：chc/视角模板/RAG事件库
+
+## 反派经营红利 [feat_villain_operations]
+分类：strategy
+阶级：epic
+事实：某人视角的幕后经营优势。
+边界/效果：提供组织、资源、代理人和暗线推进能力，同时增加正道追踪与反制。
+关联技能：skill_forbidden_art_analysis
+数值：{"conditionBonus":2}
+来源：chc/视角模板/RAG事件库
+
+## 少宫主身份 [feat_identity_young_master]
+分类：background
+阶级：novice
+事实：李寻道/清研之子身份带来的低阶资源调度便利。
+边界/效果：小额支取、外门任务、普通通行可简化；大额或敏感事项留下账目与关注。
+数值：{"socialBonus":2}
+来源：chc/视角模板/RAG事件库
+
+## 越境抓手 [feat_cross_realm_hook]
+分类：combat
+阶级：expert
+事实：主角通过克制、法器、地形、偷袭、气运或情报缩小境界差。
+边界/效果：低一大境可正面争胜；低两大境需要至少两项有利条件；低三大境以上通常只做阶段胜利。
+数值：{"conditionBonus":3}
+来源：chc/视角模板/RAG事件库
+
+## 镜月见证 [feat_mirror_witness]
+分类：mystery
+阶级：expert
+事实：胧或镜月天提供的梦境/镜像线索能力。
+边界/效果：提供裂缝和问题，不直接给答案；每次使用都应留下验证任务或代价。
+关联技能：skill_mirror_dream
+数值：{"conditionBonus":2}
+来源：chc/视角模板/RAG事件库
+
+## 资源留痕 [feat_accountable_resources]
+分类：constraint
+阶级：novice
+事实：宗门身份、母器权限、情报交易和拍卖资源都会留下账目。
+边界/效果：任何强资源调度都应提高关注、人情债、账目或反制风险。
+关联技能：skill_intel_brokerage、skill_sect_etiquette
+数值：{"attentionDelta":1}
+来源：chc/视角模板/RAG事件库
+
+## 原主印痕 [feat_original_imprint]
+分类：mystery
+阶级：expert
+事实：禁术傀儡或人格封印中残留的肌肉记忆、习惯和执念。
+边界/效果：可成为救援、反制、识破伪装或人格裂缝的入口。
+关联技能：skill_forbidden_art_analysis
+数值：{"conditionBonus":2}
+来源：chc/视角模板/RAG事件库

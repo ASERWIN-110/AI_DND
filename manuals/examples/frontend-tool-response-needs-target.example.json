@@ -1,0 +1,33 @@
+{
+  "ok": true,
+  "status": "needs_target",
+  "reason": "target_required",
+  "llmUsed": false,
+  "dryRun": true,
+  "request": {
+    "chatSessionId": "chat_example",
+    "actorId": "pc_arin",
+    "skillId": "skill_firebolt"
+  },
+  "actor": {
+    "actorId": "pc_arin",
+    "name": "Arin",
+    "isPlayer": true
+  },
+  "targetPolicy": "singleEnemy",
+  "targetCandidates": [
+    {
+      "actorId": "npc_guard",
+      "name": "Gate Guard",
+      "actorType": "npc",
+      "isPlayer": false,
+      "source": "scene_npcs"
+    }
+  ],
+  "displayHints": {
+    "surface": "skillBar",
+    "panel": "target-picker",
+    "severity": "info",
+    "primaryAction": "select_target"
+  }
+}

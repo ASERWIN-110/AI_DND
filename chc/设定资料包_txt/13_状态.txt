@@ -1,0 +1,97 @@
+# 状态
+用途：写入 status_registry / npc_structured_states / player state。所有会变化的内容必须写状态，不只写进prompt。
+
+## 压力 [status_pressure]
+分类：condition
+强度：variable
+持续类型：scene
+叠加规则：highest
+事实：紧张、追踪、时间压力或战斗压迫。
+边界/效果：通常 0-6 槽；2 明显，4 危险，6 触发强后果。
+数值：{"pressureDelta":1}
+来源：chc/RPG配置/reference_texts
+
+## 污染 [status_pollution]
+分类：curse
+强度：variable
+持续类型：conditional
+叠加规则：highest
+事实：禁器、禁术、污染源或错误炼化带来的长期风险。
+边界/效果：不能只当气氛；应有来源、解除条件、反制入口和后续后果。
+数值：{"pollutionDelta":1}
+来源：chc/RPG配置/reference_texts
+
+## 未鉴定 [status_unidentified]
+分类：item-state
+强度：minor
+持续类型：conditional
+叠加规则：none
+事实：未知功法、法器、丹药、材料或残片的默认状态。
+边界/效果：鉴定前不公开完整能力；鉴定后再迁移到技能、物品或专长。
+数值：{"severityScore":1}
+来源：chc/RPG配置/reference_texts
+
+## 被关注 [status_attention]
+分类：faction-clock
+强度：variable
+持续类型：timed
+叠加规则：highest
+事实：势力、反派、宗门或临时对象注意到玩家行动。
+边界/效果：关注 0-6：2 打听，4 干预，6 追捕、封锁、回收或夺权。
+数值：{"attentionDelta":1}
+来源：chc/RPG配置/reference_texts
+
+## 人格失衡 [status_persona_instability]
+分类：mental
+强度：major
+持续类型：scene
+叠加规则：highest
+事实：人格切换、遮掩破绽、梦境触发或禁器影响的非露骨状态。
+边界/效果：只在明确锚点或事件结算后改变人格态；不得提前套用后期成品态。
+数值：{"severityScore":5}
+来源：chc/RPG配置/reference_texts
+
+## 控制稳定度 [status_control_stability]
+分类：forbidden-art-clock
+强度：variable
+持续类型：conditional
+叠加规则：bounded
+事实：禁器、人格封印、权限托管的稳定程度。
+边界/效果：0 表示无控制，3 表示可运行但有破绽，6 表示强控制但高暴露；过高也会引发反制。
+数值：{"severityScore":3}
+来源：chc/RPG配置/reference_texts
+
+## 原主印痕 [status_original_imprint]
+分类：memory-fragment
+强度：minor
+持续类型：conditional
+叠加规则：highest
+事实：原主习惯、执念、肌肉记忆或旧情感残留。
+边界/效果：可作为识破伪装、救援、反制或剧情裂缝；不等同于完整复活。
+数值：{"severityScore":2}
+来源：chc/RPG配置/reference_texts
+
+## 资源债 [status_resource_debt]
+分类：social-debt
+强度：variable
+持续类型：long-term
+叠加规则：additive-capped
+事实：灵石、人情、账目、宗门资源或黑市交易留下的债。
+边界/效果：资源债会换来追账、传唤、交易条件或势力关注。
+数值：{"attentionDelta":1}
+来源：chc/RPG配置/reference_texts
+
+## 时间压力 [status_time_pressure]
+分类：clock
+强度：variable
+持续类型：timed
+叠加规则：highest
+事实：任务、追捕、拍卖、闭关、封印或势力计时。
+边界/效果：失败不应卡死，而应推动事件、竞争者、风险或代价出现。
+数值：{"pressureDelta":1}
+来源：chc/RPG配置/reference_texts
+
+## 写库原则
+- NPC态度、伤势、位置、背包、时间、污染、任务阶段、关系债务、暴露风险都应写数据库。
+- 状态应包含来源、强度、持续条件、解除入口和后果，不要只有气氛词。
+- 后期成品态必须先由事件或工具结算，再写成当前状态。

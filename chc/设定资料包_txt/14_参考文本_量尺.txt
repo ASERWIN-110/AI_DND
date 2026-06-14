@@ -1,0 +1,214 @@
+# 参考文本_量尺
+用途：给工具和GM校准 DC、战力、物品强度、状态强度、奖励价值。它不是剧情，也不是角色人设。
+
+## 境界注册
+## 炼气期 [realm_qi_refining]
+tier：1
+事实：引天地灵气入体，凡人与修士分水岭；十三层。
+能力：低阶术法、基础感知、短时爆发
+限制：不能御器长飞、元灵脆弱
+典型DC：{"ordinary":10,"hard":15}
+数值：{"realmTier":1,"basePower":2,"powerScore":2,"energyPool":6,"skillCap":2,"maxItemPowerSafe":3,"flightCapability":0,"rangedTechniqueCap":2,"forbiddenArtSafeRank":0}
+来源：chc/世界书.txt#修炼境界
+
+## 筑基期 [realm_foundation]
+tier：2
+事实：经脉贯通，丹田初成，寿一百五十，可御器飞行。
+能力：御器飞行、稳定灵力外放、低阶宗门骨干
+限制：资源池仍有限
+典型DC：{"ordinary":11,"hard":16}
+数值：{"realmTier":2,"basePower":4,"powerScore":4,"energyPool":10,"skillCap":3,"maxItemPowerSafe":5,"flightCapability":4,"rangedTechniqueCap":4,"forbiddenArtSafeRank":1}
+来源：chc/世界书.txt#修炼境界
+
+## 结丹期 [realm_core]
+tier：3
+事实：丹田凝结金丹，灵力外放，多数宗门长老、校医、散修老手处此境。
+能力：开宗立派、稳定战斗法术、中阶阵器
+限制：被元婴明显压制
+典型DC：{"ordinary":12,"hard":17}
+数值：{"realmTier":3,"basePower":6,"powerScore":6,"energyPool":16,"skillCap":4,"maxItemPowerSafe":6,"flightCapability":6,"rangedTechniqueCap":6,"forbiddenArtSafeRank":2}
+来源：chc/世界书.txt#修炼境界
+
+## 元婴期 [realm_nascent]
+tier：4
+事实：碎丹成婴，一宗之主多为此境巅峰，可独镇一方。
+能力：元婴离体风险处理、高阶法器承载、大范围威压
+限制：禁器和同阶围攻仍可造成危险
+典型DC：{"ordinary":13,"hard":19}
+数值：{"realmTier":4,"basePower":8,"powerScore":8,"energyPool":24,"skillCap":5,"maxItemPowerSafe":8,"flightCapability":8,"rangedTechniqueCap":8,"forbiddenArtSafeRank":3}
+来源：chc/世界书.txt#修炼境界
+
+## 化神期 [realm_spirit]
+tier：5
+事实：元婴与元神融合，神念外放，当世顶尖，屈指可数。
+能力：操控天地灵气、炼制/理解高阶禁器、区域级影响
+限制：上古禁器、规则限制、长期布局可构成威胁
+典型DC：{"ordinary":15,"hard":21}
+数值：{"realmTier":5,"basePower":10,"powerScore":10,"energyPool":36,"skillCap":6,"maxItemPowerSafe":9,"flightCapability":9,"rangedTechniqueCap":9,"forbiddenArtSafeRank":4}
+来源：chc/世界书.txt#修炼境界
+
+## 炼虚期及以上 [realm_void]
+tier：6
+事实：传说境界，上古时代后无人确证达到。
+能力：神游、近乎神话的规则影响
+限制：只应作为传说、遗迹或压倒性背景压力
+典型DC：{"ordinary":18,"hard":24}
+数值：{"realmTier":6,"basePower":12,"powerScore":12,"energyPool":50,"skillCap":7,"maxItemPowerSafe":10,"flightCapability":10,"rangedTechniqueCap":10,"forbiddenArtSafeRank":5}
+来源：chc/世界书.txt#修炼境界
+
+## 禁术注册
+## 母器/母珠权限 [art_mother_bead_authority]
+分类：authority-network
+事实：母器驱动子器，权限并非唯一；部分权限会带来信号干扰和关注。
+机制：使用权限时通过母器对子器下达指令或读取状态。
+限制：不能无代价全控；高阶或不完整权限会留下信号、污染、反制入口。
+风险：某人关注、代理人追踪、权限反噬
+反制：切断信号、反向追踪、封印子器
+关联物品：special_mother_bead_network
+关联状态：status_attention、status_pollution
+来源：chc/世界书.txt + chc/RAG事件库
+
+## 灵丝人格编织 [art_spirit_thread_persona]
+分类：persona-seal
+事实：以灵丝、首饰或回路编织表层人格，用于伪装或托管。
+机制：读取旧记忆、肌肉习惯和预设行为模板，生成社会可接受外壳。
+限制：旧印痕会形成裂缝；长时间运行会出现重复、延迟和动作破绽。
+风险：人格失衡、旧印痕反扑、被熟人识破
+反制：触发原主执念、破坏锚点、对照旧物旧习惯
+关联物品：special_tide_bone_core
+关联状态：status_persona_instability
+来源：chc/世界书.txt + chc/RAG事件库
+
+## 锁星扣观测 [art_lock_star_observation]
+分类：observation-device
+事实：把星命、脊柱/观测锚点和光幕折射结合为远距观测工具。
+机制：可提供距离外景象、危险预警和天机裂缝。
+限制：不能全知；高强度观测会引发反侦测、压力或状态损伤。
+风险：被反侦测、压力上升、误读天象
+反制：遮蔽星命、切断扣链、梦境反照
+关联物品：special_star_lock
+关联状态：status_pressure
+来源：chc/世界书.txt + chc/RAG事件库
+
+## 禁术傀儡驱动 [art_forbidden_puppet_body]
+分类：body-drive
+事实：元灵剥离或压制后，以禁器、回路或替代人格驱动肉身。
+机制：让失去原主稳定意志的身体继续行动、伪装或执行命令。
+限制：必须处理权限、残留印痕、暴露、伦理风险和反制；不作为露骨描写入口。
+风险：残留执念、控制失稳、势力追查
+反制：破坏驱动源、唤醒印痕、高阶净化/封印
+关联物品：special_mother_bead_network
+关联状态：status_persona_instability、status_pollution
+来源：chc/世界书.txt + chc/RAG事件库
+
+## 镜术梦境示现 [art_mirror_dream_reveal]
+分类：mirror-dream
+事实：通过梦境或镜像让玩家看见被遮掩的裂缝。
+机制：提供片段、象征、问题和可调查线索。
+限制：不直接替玩家判断；不能当万能解谜工具。
+风险：误读象征、梦境污染、被镜中对象察觉
+反制：醒后验证、寻找镜月锚点、交叉检索 RAG
+关联物品：special_mirror_moon_key
+关联状态：status_unidentified
+来源：chc/世界书.txt + chc/RAG事件库
+
+## 量尺文本
+## 参考文本使用规则 [ref_bahuang_usage]
+分类：tool-guidance
+适用：all-tools、numericValues、quantificationDefinition、referenceDocuments
+字段：powerScore、effectivePower、capabilityScore、minRealmTier、minSkillRank、minItemPower、difficulty、threatScore、severityScore、valueScore
+优先级：100
+内容：当 GM 或工具需要给战力、难度、物品强度、状态强度、奖励价值、资源消耗写数值时，必须先读取本集合或 bahuang-reference-texts RAG 中的参考文本。
+这些数值是校准量尺，不是强行把所有设定数值化。若原设定已经有功法、法器、境界、权限、认主、封印、反制等明确模块，先按设定模块裁定，再用 numericValues 记录可审计的门槛、消耗、风险或加成。
+先判门槛，再判骰子：行动若低于 minRealmTier/minSkillRank/minItemPower，默认不能直接成功；只可通过一次性符箓、阵法、他人协助、禁器权限、地形或重大代价临时补足。低 1 档可高 DC 尝试，低 2 档通常只能达成缩小目标，低 3 档以上默认不成立。
+调用 system.item_registry.* 或 system.mechanics_registry.* 生成 numericValues 时，把相关参考文本作为 referenceText/referenceDocuments 传入 quantificationDefinition；不要让模型凭形容词自由编 +9、999伤害、无限持续、无代价神器。
+冲突时优先级：当前聊天数据库/工具结果 > 明确设定模块 > 本参考文本 > 常识推断。没有参考文本时取保守值，并在 quantificationAudit.reason 中说明。
+工具用途：可作为 referenceDocuments 条目：{ name: "ref_bahuang_usage", fields: ["powerScore","effectivePower","capabilityScore","minRealmTier","minSkillRank","minItemPower","difficulty","threatScore","severityScore","valueScore"], text: "..." }。 适合在 quantificationDefinition 中约束 numericFields/textFields，或在写入 numericValues 前做人工/GM校准。
+
+## 境界与战力量尺 [ref_bahuang_realm_power]
+分类：combat-scale
+适用：combat、action_resolver、mechanics_registry、item_registry
+字段：realmTier、phaseBonus、basePower、effectivePower、powerScore、threatScore、attackBonus、defenseBonus、energyPool
+优先级：90
+内容：境界不是胜负锁，只是灵压、感知、资源池和反制规模。越境可以成立，但必须收窄胜利目标或付代价。
+境界阶梯与基础战力：炼气 tier=1 basePower=2 energyPool=6；筑基 tier=2 basePower=4 energyPool=10；结丹 tier=3 basePower=6 energyPool=16；元婴 tier=4 basePower=8 energyPool=24；化神 tier=5 basePower=10 energyPool=36；炼虚/传说 tier=6 basePower=12 energyPool=50。
+小境界 phaseBonus：初期 +0，中期 +0.5，后期 +1，巅峰 +1.5。没有写明小境界时用 +0。
+有效战力公式：effectivePower = basePower + phaseBonus + skillRank + itemPowerBonus + conditionBonus - injuryPenalty - pressurePenalty - pollutionPenalty。skillRank 0-6，itemPowerBonus 通常 floor(powerScore/3)，conditionBonus 总和上限 +3，伤势/压力/污染每到 3/5/6 档分别给 -1/-2/-3。
+战力差比较：差 0-1 可正面胜负；差 2-3 低位只能靠克制/地形/法器争取局部胜利；差 4-5 低位只能逃脱、夺物、逼退、破招、拖延或伤分身；差 6+ 默认不能正面击杀，除非先通过任务削弱目标或使用禁器级代价。
+战斗加值限幅：普通临时加成 +1，明确克制/准备 +2，核心法器或大师级技巧 +3/+4，传承级但有限制 +5/+6；超过 +6 必须有封印、冷却、污染、追踪、消耗或剧情债。
+工具用途：可作为 referenceDocuments 条目：{ name: "ref_bahuang_realm_power", fields: ["realmTier","phaseBonus","basePower","effectivePower","powerScore","threatScore","attackBonus","defenseBonus","energyPool"], text: "..." }。 适合在 quantificationDefinition 中约束 numericFields/textFields，或在写入 numericValues 前做人工/GM校准。
+
+## 能力门槛数值矩阵 [ref_bahuang_capability_thresholds]
+分类：capability-threshold
+适用：action_resolver、dice、combat、environment、item_use、mechanics_registry、protagonist
+字段：capabilityScore、minRealmTier、minSkillRank、minItemPower、permissionRank、baseDC、energyCost、durationScenes、riskDelta
+优先级：95
+内容：能力门槛用于比较“能不能做”和“哪个能力更强”。先看 minRealmTier/minSkillRank/minItemPower/permissionRank，达到门槛后再掷 baseDC；未达门槛不能因为描述好听就成功。
+skillRank：0 无训练；1 入门；2 熟练；3 精英；4 核心传承；5 宗师/宗主级；6 禁术/天命/古老传承。itemPower 按物品 powerScore 0-10；permissionRank 用于母珠、铜雀台、禁器网络权限，0 无权限，1 读状态，2 下达局部命令，3 改写/接管局部节点，4 跨洲网络级，5 母器核心级。
+短距腾跃/借风滑行：capabilityScore=2，minRealmTier=1，minSkillRank=1，minItemPower=0，baseDC=10，energyCost=1，durationScenes=0；只跨沟、上墙、避险，不等于飞行。
+符箓/法器临时浮空：capabilityScore=3，minRealmTier=1，minSkillRank=0，minItemPower=3，baseDC=13，energyCost=0，charges=1，durationScenes=1；炼气可用，但消耗物品，不能长途追逐。
+稳定御器飞行：capabilityScore=4，minRealmTier=2，minSkillRank=1，minItemPower=3，baseDC=12，energyCost=2，durationScenes=1；炼气期默认不能直接做到，除非有 powerScore>=5 的飞行法器且 baseDC+5。
+战斗/追逐中飞行：capabilityScore=5，minRealmTier=2，minSkillRank=2，minItemPower=4，baseDC=15，energyCost=2/round，riskDelta=1；失败会失位、坠落或暴露。
+跨海/跨洲长距飞遁：capabilityScore=6，minRealmTier=3，minSkillRank=2，minItemPower=4，baseDC=16，energyCost=4/scene；筑基需航线、飞舟、阵法或 NPC 护送，炼气不能单独完成。
+基础远程术击（水刃/火矢/拳劲外放）：capabilityScore=2，minRealmTier=1，minSkillRank=1，minItemPower=0，baseDC=10，energyCost=1，rangeBand=near，attackBonus=1。
+稳定远程术击/连续压制：capabilityScore=4，minRealmTier=2，minSkillRank=2，minItemPower=0，baseDC=13，energyCost=2，rangeBand=mid，attackBonus=2。
+贯穿光束/星芒灼射/类激光单体攻击：capabilityScore=6，minRealmTier=3，minSkillRank=3，minItemPower=6，baseDC=16，energyCost=3，rangeBand=long，attackBonus=3；没有星命、镜术、火法或禁器锚点时不应凭空出现。
+区域压制光雨/灵压扫射：capabilityScore=8，minRealmTier=4，minSkillRank=4，minItemPower=7，baseDC=18，energyCost=5，durationRounds=1-3，attentionDelta=1；通常是元婴以上、宗门阵法或高阶禁器效果。
+水域控制：杯盏/小流 capabilityScore=1 minRealmTier=1 baseDC=8；房间/船舱积水 capabilityScore=3 minRealmTier=1 minSkillRank=2 baseDC=12 energyCost=1；码头/战场潮势 capabilityScore=5 minRealmTier=2 minSkillRank=3 baseDC=15 energyCost=3；海域级改潮 capabilityScore=8 minRealmTier=4 minSkillRank=4 baseDC=19 energyCost=6。
+禁器鉴定/权限读取：capabilityScore=4，minRealmTier=1，minSkillRank=2，minItemPower=0，permissionRank=0，baseDC=14，energyCost=1；失败会得到误读或 attentionDelta=1。
+母珠读取子器状态：capabilityScore=5，minRealmTier=1，minSkillRank=2，minItemPower=5，permissionRank=1，baseDC=13，attentionDelta=1。
+母珠远程局部命令：capabilityScore=7，minRealmTier=2，minSkillRank=3，minItemPower=6，permissionRank=2，baseDC=16，energyCost=2，attentionDelta=1，pollutionDelta=1；只能影响已绑定节点，不能全控世界。
+禁术傀儡/人格封印深层改写：capabilityScore=9，minRealmTier=4，minSkillRank=4，minItemPower=8，permissionRank=3，baseDC=21，energyCost=6，attentionDelta=2，pollutionDelta=2；只用于状态结算和高风险非露骨剧情后果，不作为普通行动奖励。
+观星/锁星扣远距观测：capabilityScore=5，minRealmTier=1，minSkillRank=2，minItemPower=5，baseDC=14，energyCost=1；跨洲或观测高阶目标 baseDC=18，attentionDelta=1。
+镜术梦境示现：capabilityScore=4，minRealmTier=1，minSkillRank=1，minItemPower=4，baseDC=13，energyCost=1；只能给片段与线索，不能替玩家完成判断。
+抗污染/破封印用 resistanceScore = realmTier + willRank + anchorBonus + cleansingItemBonus - pollutionLevel。若 resistanceScore 低于 effectScore 1-2，可代价成功；低 3+ 默认被压制或只获得短暂清醒。
+工具用途：可作为 referenceDocuments 条目：{ name: "ref_bahuang_capability_thresholds", fields: ["capabilityScore","minRealmTier","minSkillRank","minItemPower","permissionRank","baseDC","energyCost","durationScenes","riskDelta"], text: "..." }。 适合在 quantificationDefinition 中约束 numericFields/textFields，或在写入 numericValues 前做人工/GM校准。
+
+## 行动难度与骰子裁决量尺 [ref_bahuang_action_difficulty]
+分类：resolution-scale
+适用：dice、action_resolver、persuasion、environment、scene
+字段：difficulty、dc、conditionBonus、thresholdGap、pressureDelta、successBand
+优先级：85
+内容：AI DND 有骰子与裁决工具，不沿用 SillyTavern 的纯无骰设计。低风险、已有明确条件的行动可以直接推进；结果不确定、代价较高或玩家要求公平裁决时，调用 dice/action_resolver 等工具。
+建议 DC：8 日常；10 有压力；13 困难；16 险局；19 绝境；22+ 超纲。不要每个动作都掷骰，只有不确定行动才掷。
+门槛差 thresholdGap = 当前可用数值 - 行动门槛。gap>=0 按 baseDC；gap=-1 时 DC +4 且必须付资源或留下代价；gap=-2 时只能做缩小目标，如短暂、局部、一次性、借外物；gap<=-3 不成立，除非先换目标或取得新资源。
+技能/设定修正通常 -2 到 +6：无训练 -1/0，入门 +1，熟练 +2，精英 +3，核心功法/法器/专长 +4 到 +6。境界优势、地形、准备、克制、NPC协助、资源投入各可给 +1/+2，但总修正应受参考文本约束。
+结果解释：高出 DC 5 以上为完全成功；达到 DC 为成功；低于 DC 1-4 为代价成功或局部成功；低于 DC 5 以上为失败并产生新局面。
+失败仍应推进局势：消耗资源、增加关注、暴露风险、改变场景、给出新线索或转入战斗/谈判，不让玩家卡死。
+工具用途：可作为 referenceDocuments 条目：{ name: "ref_bahuang_action_difficulty", fields: ["difficulty","dc","conditionBonus","thresholdGap","pressureDelta","successBand"], text: "..." }。 适合在 quantificationDefinition 中约束 numericFields/textFields，或在写入 numericValues 前做人工/GM校准。
+
+## 物品、法器、丹药量尺 [ref_bahuang_item_scale]
+分类：item-scale
+适用：item_registry、slot_use、item_use、reward
+字段：powerScore、valueScore、damageBonus、armorBonus、healingAmount、charges、cooldownRounds
+优先级：85
+内容：物品先按类型、品级、限制、认主/封印/冷却、消耗来定性，再写数值。未知物先入 U 未鉴定物，不直接给完整能力。
+powerScore：0 无机械效果；1-2 常用品/轻微便利；3-4 低阶法器/一次性丹药；5-6 筑基金丹级强物；7-8 元婴化神级核心物；9-10 传承/禁器级，但必须有强限制。
+valueScore：0 废品；1 普通材料；2-3 常见灵材/低阶丹药；4-5 稀有法器/关键材料；6-7 高阶传承资源；8+ 足以引发争夺。
+战斗加值：普通 +0，精良 +1，明确克制/罕见 +2/+3，大师/高阶 +4，传承级 +5/+6。超过 +6 不应长期常驻。
+消耗品通常有 charges 或 quantity；一次性强效果只生效一次，持续效果要写 durationRounds/durationScenes/cooldownRounds。
+工具用途：可作为 referenceDocuments 条目：{ name: "ref_bahuang_item_scale", fields: ["powerScore","valueScore","damageBonus","armorBonus","healingAmount","charges","cooldownRounds"], text: "..." }。 适合在 quantificationDefinition 中约束 numericFields/textFields，或在写入 numericValues 前做人工/GM校准。
+
+## 状态、伤势、污染量尺 [ref_bahuang_status_scale]
+分类：status-scale
+适用：mechanics_registry、effect_settlement、trigger、combat
+字段：severityScore、damagePerRound、durationRounds、pressureDelta、pollutionDelta
+优先级：80
+内容：状态强度要看持续时间、可解除性、叠加规则和剧情后果，不只看形容词。
+severityScore：1-2 轻微不便；3-4 明显劣势或轻伤；5-6 中重度状态，影响行动路线；7-8 严重危机，需要资源/场景处理；9-10 近乎失控/濒死/核心禁术风险。
+durationRounds：轻微 1-2 回合；明确状态 3-5 回合；整场战斗/场景用 durationType=scene；长期影响必须写解除条件。
+伤势/压力/污染通常用 0-6 槽：1 痕迹，2 轻压，3 明显影响，4 危险，5 临界，6 失控/倒地/重大后果。
+可叠加状态要写 stackRule；同类状态优先刷新或取最高，不默认无限叠加。
+工具用途：可作为 referenceDocuments 条目：{ name: "ref_bahuang_status_scale", fields: ["severityScore","damagePerRound","durationRounds","pressureDelta","pollutionDelta"], text: "..." }。 适合在 quantificationDefinition 中约束 numericFields/textFields，或在写入 numericValues 前做人工/GM校准。
+
+## 奖励、资源、成长量尺 [ref_bahuang_reward_resource]
+分类：reward-scale
+适用：quest、encounter、resource、inventory、growth
+字段：rewardScore、valueScore、cultivationPoints、favorDelta、attentionDelta
+优先级：75
+内容：奖励必须入账，但不要把普通奖励膨胀成神器。小事件给小额资源、线索、临时人情或 U 未鉴定物；重要事件才给核心功法/法器/长期能力。
+修行点：完成小目标 1 点；完成章节或强敌/重要事件 2 点；突破或属性 3 以后需要导师、功法、资源或实战事件。
+灵石/货币：日常采购是小额；宗门身份可支取合理低阶用度，但要留下账目；大额资源必须带押金、人情、追账、势力关注或任务义务。
+人情/关注：轻微帮助 +1；救命/关键秘密 +2/+3；背叛或严重冒犯 -2/-3。关注 0-6，2 出现打听，4 行动干预，6 回收/追捕/封锁/灭口/夺权等强后果。
+强奖励至少带一个限制：未鉴定、残缺、封印、需认主、次数、冷却、污染、追踪、债务、竞争者或反制入口。
+工具用途：可作为 referenceDocuments 条目：{ name: "ref_bahuang_reward_resource", fields: ["rewardScore","valueScore","cultivationPoints","favorDelta","attentionDelta"], text: "..." }。 适合在 quantificationDefinition 中约束 numericFields/textFields，或在写入 numericValues 前做人工/GM校准。

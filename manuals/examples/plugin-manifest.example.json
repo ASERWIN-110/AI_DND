@@ -1,0 +1,104 @@
+{
+  "id": "system.alchemy",
+  "name": "Alchemy Tools",
+  "version": "0.1.0",
+  "description": "Mix potions and identify ingredients.",
+  "author": "example",
+  "homepage": "https://example.invalid/alchemy",
+  "enabled": true,
+  "permissions": [
+    "npc_state.read",
+    "npc_state.write",
+    "item_registry.read",
+    "item_registry.write"
+  ],
+  "tools": [
+    {
+      "name": "mix_potion",
+      "title": "Mix Potion",
+      "description": "Preview or execute a deterministic alchemy mix.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "chatSessionId": {
+            "type": "string",
+            "description": "Owning chat session."
+          },
+          "actorId": {
+            "type": "string",
+            "description": "Actor using the alchemy station."
+          },
+          "ingredientIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Inventory item ids to mix."
+          },
+          "dryRun": {
+            "type": "boolean",
+            "default": true,
+            "description": "Preview without writing state."
+          }
+        },
+        "required": ["chatSessionId", "actorId", "ingredientIds"],
+        "additionalProperties": false
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "ok": {
+            "type": "boolean"
+          },
+          "status": {
+            "type": "string"
+          },
+          "resourceCostPreview": {
+            "type": "array"
+          },
+          "stateChangesPreview": {
+            "type": "array"
+          }
+        },
+        "additionalProperties": true
+      },
+      "visibility": "public",
+      "autoCallable": false,
+      "mutatesState": true,
+      "tags": ["alchemy", "inventory", "write"],
+      "metadata": {
+        "frontendContract": "ai-dnd.frontend-tool.v1",
+        "requiresConfirmation": true
+      }
+    }
+  ],
+  "metadata": {
+    "manifestVersion": "ai-dnd.plugin.v1",
+    "pluginType": "tool-plugin",
+    "runtime": {
+      "kind": "descriptor-only",
+      "handler": "none"
+    },
+    "reuses": [
+      "system.npc_state",
+      "system.item_use",
+      "system.item_registry"
+    ],
+    "requiresTools": [
+      "system.npc_state.get_state",
+      "system.item_use.use_item"
+    ],
+    "frontend": {
+      "panels": ["inventory", "crafting"],
+      "events": ["inventory:changed", "status:changed"]
+    },
+    "hooks": [
+      {
+        "id": "after_item_use",
+        "phase": "after_tool",
+        "toolId": "system.item_use.use_item",
+        "mode": "observe"
+      }
+    ]
+  }
+}

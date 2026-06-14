@@ -1,0 +1,451 @@
+{
+  "format": "ai-dnd-character-resources-v1",
+  "initialSetting": {
+    "version": "1",
+    "description": "《灰港回路》系统测试剧本 sidecar。覆盖主角、NPC、地图、场景挂载、任务、关系、阵营、背包、状态和数值参考。",
+    "collections": [
+      {
+        "name": "npc_structured_states",
+        "fields": [
+          { "name": "npcId", "type": "text", "required": true },
+          { "name": "playerId", "type": "text" },
+          { "name": "name", "type": "text", "required": true },
+          { "name": "actorType", "type": "text" },
+          { "name": "isPlayer", "type": "boolean" },
+          { "name": "isProtagonist", "type": "boolean" },
+          { "name": "sceneId", "type": "text" },
+          { "name": "status", "type": "text" },
+          { "name": "values", "type": "json" },
+          { "name": "statusBar", "type": "json" },
+          { "name": "resources", "type": "json" },
+          { "name": "skillBar", "type": "json" },
+          { "name": "inventory", "type": "json" },
+          { "name": "equipment", "type": "json" },
+          { "name": "specialStatuses", "type": "json" },
+          { "name": "greeting", "type": "text" },
+          { "name": "notes", "type": "text" }
+        ],
+        "seedRecords": [
+          {
+            "id": "npcstate_pc_cenyi",
+            "npcId": "pc_cenyi",
+            "playerId": "player_cenyi",
+            "name": "岑一",
+            "actorType": "player",
+            "isPlayer": true,
+            "isProtagonist": true,
+            "sceneId": "scene_gray_market",
+            "status": "on_case",
+            "values": { "hp": 24, "maxHp": 24, "focus": 8, "maxFocus": 8, "reputation": 2, "fatigue": 0 },
+            "statusBar": {
+              "hp": 24,
+              "maxHp": 24,
+              "focus": 8,
+              "maxFocus": 8,
+              "conditions": ["巡查员", "携带盐灯芯", "灰港通行"]
+            },
+            "resources": {
+              "focus": { "name": "专注", "amount": 8, "max": 8 },
+              "authority": { "name": "巡查威信", "amount": 2, "max": 4 },
+              "saltWicks": { "name": "盐灯芯", "amount": 1, "max": 1 },
+              "whistles": { "name": "铜哨", "amount": 1, "max": 1 }
+            },
+            "skillBar": {
+              "skills": [
+                { "id": "observe_traces", "name": "痕迹观察", "rank": 3, "ready": true, "hint": "发现脚印、暗号、伏击和物证。" },
+                { "id": "harbor_talk", "name": "港口交涉", "rank": 2, "ready": true, "hint": "和商人、守卫、帮派谈判。" },
+                { "id": "route_sense", "name": "路线判断", "rank": 2, "ready": true, "hint": "选择安全路径、识别封锁和绕路。" },
+                { "id": "short_blade", "name": "短刃防身", "rank": 2, "ready": true, "hint": "轻量战斗测试。" }
+              ]
+            },
+            "inventory": {
+              "currency": { "copper": 12 },
+              "items": [
+                { "id": "salt_wick", "name": "盐灯芯", "quantity": 1, "use": "稳定雾气，克制雾魇，证明旧雾灯部件来源。" },
+                { "id": "oilcloth_map", "name": "油布地图", "quantity": 1, "use": "查看灰港市场、钟桥、旧盐仓和黑潮码头路线。" },
+                { "id": "copper_whistle", "name": "铜哨", "quantity": 1, "use": "呼叫港务署巡逻或制造短暂威慑。" },
+                { "id": "evidence_pouch", "name": "证物袋", "quantity": 2, "use": "收纳盐仓灰、暗号纸条或灯芯碎屑。" },
+                { "id": "field_bandage", "name": "随身绷带", "quantity": 1, "use": "战斗或环境伤害后恢复少量 HP。" }
+              ]
+            },
+            "equipment": {
+              "hand": { "name": "短刃" },
+              "belt": { "name": "铜哨" },
+              "pack": { "name": "油布地图" }
+            },
+            "specialStatuses": [
+              {
+                "id": "test_actor",
+                "name": "测试主角",
+                "description": "用于覆盖玩家控制、状态栏、背包、技能和资源写入。"
+              }
+            ],
+            "greeting": "我站在灰港市场中央，先把油布地图压在湿木箱上，准备追查雾灯芯。",
+            "notes": "唯一玩家主角。新建聊天应自动绑定为 controlled actor。"
+          },
+          {
+            "id": "npcstate_lin",
+            "npcId": "npc_lin",
+            "name": "阿绫",
+            "actorType": "npc",
+            "isPlayer": false,
+            "sceneId": "scene_gray_market",
+            "status": "watchful",
+            "values": { "trust": 2, "fear": 1, "clueValue": 3 },
+            "inventory": { "items": [{ "id": "salt_ash_sample", "name": "盐仓灰样本", "quantity": 1 }] },
+            "notes": "市场摊主。知道有人带着盐仓灰经过钟桥。"
+          },
+          {
+            "id": "npcstate_guard_liang",
+            "npcId": "npc_guard_liang",
+            "name": "梁科",
+            "actorType": "npc",
+            "isPlayer": false,
+            "sceneId": "scene_bell_bridge",
+            "status": "blocking",
+            "values": { "trust": 1, "pressure": 3, "suspicion": 2 },
+            "notes": "港务署守卫。封锁钟桥，但可被证据或威信说服。"
+          },
+          {
+            "id": "npcstate_stump",
+            "npcId": "npc_stump",
+            "name": "小桩",
+            "actorType": "npc",
+            "isPlayer": false,
+            "sceneId": "scene_salt_warehouse",
+            "status": "guarding_children",
+            "values": { "trust": 1, "fear": 2, "routeKnowledge": 4 },
+            "notes": "拾荒童会头目。知道旧盐仓暗渠路线。"
+          },
+          {
+            "id": "npcstate_yanchao",
+            "npcId": "npc_yanchao",
+            "name": "阎潮",
+            "actorType": "npc",
+            "isPlayer": false,
+            "sceneId": "scene_blacktide_pier",
+            "status": "suspect",
+            "values": { "hostility": 3, "leverage": 3, "escapePlan": 2 },
+            "notes": "潮帮副手。拆走旧雾灯芯。"
+          },
+          {
+            "id": "npcstate_mist_wraith",
+            "npcId": "npc_mist_wraith",
+            "name": "雾魇",
+            "actorType": "enemy",
+            "isPlayer": false,
+            "sceneId": "scene_salt_warehouse",
+            "status": "dormant",
+            "values": { "hp": 14, "maxHp": 14, "threat": 2, "weaknessSalt": 2 },
+            "notes": "轻量战斗测试敌人。盐灯芯可削弱它。"
+          }
+        ]
+      },
+      {
+        "name": "scene_records",
+        "fields": [
+          { "name": "sceneId", "type": "text", "required": true },
+          { "name": "title", "type": "text" },
+          { "name": "summary", "type": "text" },
+          { "name": "visibleClues", "type": "json" },
+          { "name": "nextBeats", "type": "json" }
+        ],
+        "seedRecords": [
+          {
+            "id": "scene_gray_market",
+            "sceneId": "scene_gray_market",
+            "title": "灰港市场",
+            "summary": "摊棚低矮、雾气压近，钟桥方向有人设伏，地上有盐仓灰脚印。",
+            "visibleClues": ["盐仓灰脚印", "钟桥暗哨", "油布地图上的新叉号"],
+            "nextBeats": ["观察脚印", "询问阿绫", "前往钟桥", "绕去旧盐仓"]
+          },
+          {
+            "id": "scene_bell_bridge",
+            "sceneId": "scene_bell_bridge",
+            "title": "钟桥",
+            "summary": "通往黑潮码头的桥被梁科封锁，桥拱下有潮帮暗号。",
+            "visibleClues": ["桥拱暗号", "港务署封锁令", "潮帮盯梢"],
+            "nextBeats": ["说服梁科", "检查桥拱", "从旧盐仓绕路"]
+          },
+          {
+            "id": "scene_salt_warehouse",
+            "sceneId": "scene_salt_warehouse",
+            "title": "旧盐仓",
+            "summary": "废仓里有盐灰、旧暗渠和被雾灯芯吸引的雾魇。",
+            "visibleClues": ["盐灰拖痕", "暗渠入口", "雾魇低鸣"],
+            "nextBeats": ["安抚小桩", "使用盐灯芯", "进入暗渠", "应对雾魇"]
+          },
+          {
+            "id": "scene_blacktide_pier",
+            "sceneId": "scene_blacktide_pier",
+            "title": "黑潮码头",
+            "summary": "潮帮准备交易雾灯芯，阎潮可能逃走。",
+            "visibleClues": ["潮帮交易箱", "缺失雾灯芯", "走私船缆"],
+            "nextBeats": [" confront 阎潮", "夺回灯芯", "呼叫港务署"]
+          }
+        ]
+      },
+      {
+        "name": "scene_map_mounts",
+        "fields": [
+          { "name": "sceneId", "type": "text", "required": true },
+          { "name": "mapId", "type": "text", "required": true },
+          { "name": "name", "type": "text" },
+          { "name": "status", "type": "text" },
+          { "name": "isActive", "type": "boolean" }
+        ],
+        "seedRecords": [
+          { "id": "mount_gray_market", "sceneId": "scene_gray_market", "mapId": "map_gray_market", "name": "灰港市场", "status": "active", "isActive": true },
+          { "id": "mount_bell_bridge", "sceneId": "scene_bell_bridge", "mapId": "map_bell_bridge", "name": "钟桥", "status": "active", "isActive": true },
+          { "id": "mount_salt_warehouse", "sceneId": "scene_salt_warehouse", "mapId": "map_salt_warehouse", "name": "旧盐仓", "status": "active", "isActive": true },
+          { "id": "mount_blacktide_pier", "sceneId": "scene_blacktide_pier", "mapId": "map_blacktide_pier", "name": "黑潮码头", "status": "active", "isActive": true }
+        ]
+      },
+      {
+        "name": "map_structured_states",
+        "fields": [
+          { "name": "mapId", "type": "text", "required": true },
+          { "name": "title", "type": "text" },
+          { "name": "areas", "type": "json" },
+          { "name": "routes", "type": "json" },
+          { "name": "objects", "type": "json" },
+          { "name": "hazards", "type": "json" }
+        ],
+        "seedRecords": [
+          {
+            "id": "map_gray_harbor_overview",
+            "mapId": "map_gray_harbor_overview",
+            "title": "灰港总览",
+            "areas": [
+              { "id": "market", "name": "灰港市场", "sceneId": "scene_gray_market" },
+              { "id": "bridge", "name": "钟桥", "sceneId": "scene_bell_bridge" },
+              { "id": "warehouse", "name": "旧盐仓", "sceneId": "scene_salt_warehouse" },
+              { "id": "pier", "name": "黑潮码头", "sceneId": "scene_blacktide_pier" },
+              { "id": "alley", "name": "雨巷暗道" }
+            ],
+            "routes": [
+              { "id": "market_to_bridge", "fromAreaId": "market", "toAreaId": "bridge", "status": "watched", "cost": 2 },
+              { "id": "market_to_warehouse", "fromAreaId": "market", "toAreaId": "warehouse", "status": "open", "cost": 2 },
+              { "id": "warehouse_to_pier", "fromAreaId": "warehouse", "toAreaId": "pier", "status": "hidden", "cost": 3 }
+            ],
+            "objects": [
+              { "id": "market_crate", "name": "湿木箱", "location": "market" },
+              { "id": "bridge_mark", "name": "潮帮暗号", "location": "bridge" },
+              { "id": "salt_channel", "name": "旧暗渠", "location": "warehouse" },
+              { "id": "trade_box", "name": "交易箱", "location": "pier", "hidden": true }
+            ],
+            "hazards": [
+              { "id": "gray_fog", "name": "灰雾", "severity": 2, "counter": "盐灯芯" },
+              { "id": "watched_bridge", "name": "钟桥盯梢", "severity": 2, "counter": "绕路或交涉" },
+              { "id": "mist_wraith", "name": "雾魇", "severity": 3, "counter": "盐灯芯或战斗" }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "quest_records",
+        "fields": [
+          { "name": "questId", "type": "text", "required": true },
+          { "name": "title", "type": "text" },
+          { "name": "status", "type": "text" },
+          { "name": "objectives", "type": "json" },
+          { "name": "clues", "type": "json" },
+          { "name": "progress", "type": "integer" }
+        ],
+        "seedRecords": [
+          {
+            "id": "quest_gray_lamp",
+            "questId": "quest_gray_lamp",
+            "title": "追回旧雾灯芯",
+            "status": "active",
+            "objectives": [
+              "在灰港市场确认第一批线索",
+              "找到通往旧盐仓或黑潮码头的可靠路线",
+              "确认阎潮与雾灯芯的关系",
+              "夺回或安全复位雾灯芯"
+            ],
+            "clues": ["盐仓灰脚印", "钟桥暗哨", "潮帮暗号", "旧盐仓暗渠"],
+            "progress": 1
+          }
+        ]
+      },
+      {
+        "name": "reference_texts",
+        "fields": [
+          { "name": "referenceId", "type": "text", "required": true },
+          { "name": "title", "type": "text" },
+          { "name": "category", "type": "text" },
+          { "name": "appliesTo", "type": "json" },
+          { "name": "fields", "type": "json" },
+          { "name": "priority", "type": "integer" },
+          { "name": "content", "type": "text" },
+          { "name": "toolUsage", "type": "text" }
+        ],
+        "seedRecords": [
+          {
+            "id": "ref_gray_harbor_usage",
+            "referenceId": "ref_gray_harbor_usage",
+            "title": "灰港测试数值参考使用规则",
+            "category": "tool-guidance",
+            "appliesTo": ["GM", "action_resolver", "combat", "persuasion", "item_use", "faction", "map"],
+            "fields": ["difficulty", "riskLevel", "trust", "suspicion", "threat", "rewardScore"],
+            "priority": 100,
+            "content": "所有难度、NPC态度、阵营影响、战斗威胁、物品强度和奖励都先参考本集合。已有数据库状态优先于叙事推断。测试剧本用低到中等风险，避免单轮永久失败。",
+            "toolUsage": "生成 numericValues、difficulty、riskLevel、trustDelta、threat 或 rewardScore 时，把相关记录作为 referenceText 或 referenceDocuments。"
+          },
+          {
+            "id": "ref_gray_difficulty",
+            "referenceId": "ref_gray_difficulty",
+            "title": "行动难度量尺",
+            "category": "difficulty-scale",
+            "appliesTo": ["action_resolver", "map", "quest"],
+            "fields": ["difficulty", "riskLevel", "focusCost"],
+            "priority": 90,
+            "content": "难度0=直接成功，如查看背包或读已知地图；1=轻微阻碍，如发现脚印或公开传闻；2=需要方法，如说服梁科、穿过盯梢钟桥；3=明显风险，如潜入旧盐仓或对抗雾魇；4=结尾危机，如阻止阎潮上船。普通失败消耗专注1或增加警戒，不让剧情停住。",
+            "toolUsage": "普通测试动作取0-3；只有结尾或高风险不可逆动作取4。"
+          },
+          {
+            "id": "ref_gray_npc_attitude",
+            "referenceId": "ref_gray_npc_attitude",
+            "title": "NPC信任与警戒量尺",
+            "category": "npc-scale",
+            "appliesTo": ["npc_state", "persuasion", "npc_relationships"],
+            "fields": ["trust", "fear", "suspicion", "hostility"],
+            "priority": 80,
+            "content": "态度值0-5。阿绫trust2，温和询问或证物袋收样可+1；梁科trust1/suspicion2，巡查威信或证据可让trust+1或suspicion-1；小桩fear2，承诺保护孩子可fear-1/trust+1；阎潮hostility3，威胁或阻截会提高敌意。每轮通常只变化1点，强证据最多2点。",
+            "toolUsage": "修改 NPC 状态或关系时保守增减，避免一句话拉满或清零。"
+          },
+          {
+            "id": "ref_gray_item_scale",
+            "referenceId": "ref_gray_item_scale",
+            "title": "物品与资源量尺",
+            "category": "item-scale",
+            "appliesTo": ["item_use", "slot_use", "resources", "combat"],
+            "fields": ["powerScore", "uses", "hpDelta", "threatDelta"],
+            "priority": 75,
+            "content": "盐灯芯powerScore=3，可稳定雾气或削弱雾魇，不是万能攻击；油布地图powerScore=1，只帮助寻路；铜哨powerScore=2，可呼叫巡逻或威慑普通NPC；证物袋powerScore=1，用于保存线索；随身绷带恢复HP 3-5，一次性。",
+            "toolUsage": "背包物品有明确use字段时可直接使用；战斗或资源结算需要写入 inventory/resources/statusBar。"
+          },
+          {
+            "id": "ref_gray_combat_scale",
+            "referenceId": "ref_gray_combat_scale",
+            "title": "轻量战斗量尺",
+            "category": "combat-scale",
+            "appliesTo": ["combat", "effect_settlement"],
+            "fields": ["hp", "damage", "threat", "rewardScore"],
+            "priority": 70,
+            "content": "测试敌人雾魇HP14、threat2。主角HP24。普通命中伤害3-6，盐灯芯命中或准备充分可额外削弱威胁1。失败不应秒杀主角，最多造成HP3-5或附加“被灰雾缠绕”。胜利奖励为线索或通路，不给高价值神器。",
+            "toolUsage": "战斗测试优先验证 prepare_battle、resolve_action、effect settlement 和战利品/线索写入。"
+          },
+          {
+            "id": "ref_gray_faction_scale",
+            "referenceId": "ref_gray_faction_scale",
+            "title": "阵营影响量尺",
+            "category": "faction-scale",
+            "appliesTo": ["factions", "quest", "npc_relationships"],
+            "fields": ["tension", "influence", "loyalty", "reputation"],
+            "priority": 65,
+            "content": "港务署重秩序，潮帮重走私利益，拾荒童会重安全小路。阵营 tension/influence 通常0-5，每次事件变化1点，重大公开证据变化2点。主角公开帮助港务署会让港务署好感+1、潮帮警戒+1；保护小桩会让拾荒童会信任+1。",
+            "toolUsage": "阵营变化写入 faction_memberships、faction_edges 或相关 extension 数据，不只写在叙事中。"
+          }
+        ]
+      }
+    ]
+  },
+  "resources": {
+    "globalData": {
+      "collections": [
+        {
+          "collection": "npc_relation_nodes",
+          "records": [
+            { "id": "pc_cenyi", "npcId": "pc_cenyi", "name": "岑一", "tags": ["player", "watch"], "summary": "灰港巡查员，测试主角。" },
+            { "id": "npc_lin", "npcId": "npc_lin", "name": "阿绫", "tags": ["merchant", "witness"], "summary": "市场摊主，掌握盐仓灰脚印线索。" },
+            { "id": "npc_guard_liang", "npcId": "npc_guard_liang", "name": "梁科", "tags": ["guard"], "summary": "封锁钟桥的港务署守卫。" },
+            { "id": "npc_stump", "npcId": "npc_stump", "name": "小桩", "tags": ["scavenger", "route"], "summary": "知道旧盐仓暗渠路线。" },
+            { "id": "npc_yanchao", "npcId": "npc_yanchao", "name": "阎潮", "tags": ["gang", "suspect"], "summary": "潮帮副手，雾灯芯盗取者。" },
+            { "id": "npc_mist_wraith", "npcId": "npc_mist_wraith", "name": "雾魇", "tags": ["enemy"], "summary": "旧盐仓的轻量测试敌人。" }
+          ]
+        },
+        {
+          "collection": "npc_relation_edges",
+          "records": [
+            { "id": "rel_cenyi_lin", "fromNpcId": "pc_cenyi", "toNpcId": "npc_lin", "relationType": "可建立信任", "label": "可建立信任", "weight": 1 },
+            { "id": "rel_cenyi_liang", "fromNpcId": "pc_cenyi", "toNpcId": "npc_guard_liang", "relationType": "同属秩序阵营但互相怀疑", "label": "同属秩序阵营但互相怀疑", "weight": 0 },
+            { "id": "rel_stump_yanchao", "fromNpcId": "npc_stump", "toNpcId": "npc_yanchao", "relationType": "害怕潮帮", "label": "害怕潮帮", "weight": -2 },
+            { "id": "rel_yanchao_cenyi", "fromNpcId": "npc_yanchao", "toNpcId": "pc_cenyi", "relationType": "潜在敌对", "label": "潜在敌对", "weight": -2 }
+          ]
+        },
+        {
+          "collection": "map_relation_nodes",
+          "records": [
+            { "id": "map_gray_market", "mapId": "map_gray_market", "name": "灰港市场", "type": "district", "tags": ["start", "market"] },
+            { "id": "map_bell_bridge", "mapId": "map_bell_bridge", "name": "钟桥", "type": "bridge", "tags": ["blocked", "watched"] },
+            { "id": "map_salt_warehouse", "mapId": "map_salt_warehouse", "name": "旧盐仓", "type": "warehouse", "tags": ["clue", "danger"] },
+            { "id": "map_blacktide_pier", "mapId": "map_blacktide_pier", "name": "黑潮码头", "type": "pier", "tags": ["finale", "gang"] },
+            { "id": "map_rain_alley", "mapId": "map_rain_alley", "name": "雨巷暗道", "type": "alley", "tags": ["shortcut"] }
+          ]
+        },
+        {
+          "collection": "map_relation_edges",
+          "records": [
+            { "id": "edge_market_bridge", "fromMapId": "map_gray_market", "toMapId": "map_bell_bridge", "relationType": "main_road", "status": "watched", "cost": 2 },
+            { "id": "edge_market_warehouse", "fromMapId": "map_gray_market", "toMapId": "map_salt_warehouse", "relationType": "side_road", "status": "open", "cost": 2 },
+            { "id": "edge_warehouse_pier", "fromMapId": "map_salt_warehouse", "toMapId": "map_blacktide_pier", "relationType": "hidden_channel", "status": "hidden", "cost": 3 },
+            { "id": "edge_bridge_pier", "fromMapId": "map_bell_bridge", "toMapId": "map_blacktide_pier", "relationType": "bridge", "status": "blocked", "cost": 1 },
+            { "id": "edge_market_alley", "fromMapId": "map_gray_market", "toMapId": "map_rain_alley", "relationType": "alley", "status": "open", "cost": 1 },
+            { "id": "edge_alley_warehouse", "fromMapId": "map_rain_alley", "toMapId": "map_salt_warehouse", "relationType": "shortcut", "status": "open", "cost": 1 }
+          ]
+        },
+        {
+          "collection": "faction_nodes",
+          "records": [
+            { "id": "faction_harbor_office", "factionId": "faction_harbor_office", "name": "港务署", "kind": "authority", "summary": "维持灰港秩序，急于恢复雾灯。", "numericValues": { "influence": 4, "tension": 2 } },
+            { "id": "faction_tide_gang", "factionId": "faction_tide_gang", "name": "潮帮", "kind": "gang", "summary": "控制黑潮码头走私线。", "numericValues": { "influence": 3, "tension": 4 } },
+            { "id": "faction_scavenger_kids", "factionId": "faction_scavenger_kids", "name": "拾荒童会", "kind": "street_group", "summary": "掌握暗渠和小路，只信保护孩子的人。", "numericValues": { "influence": 2, "tension": 1 } }
+          ]
+        },
+        {
+          "collection": "faction_edges",
+          "records": [
+            { "id": "fedge_office_gang", "fromFactionId": "faction_harbor_office", "toFactionId": "faction_tide_gang", "relationType": "crackdown", "tension": 4 },
+            { "id": "fedge_gang_kids", "fromFactionId": "faction_tide_gang", "toFactionId": "faction_scavenger_kids", "relationType": "intimidation", "tension": 3 },
+            { "id": "fedge_office_kids", "fromFactionId": "faction_harbor_office", "toFactionId": "faction_scavenger_kids", "relationType": "neglect", "tension": 2 }
+          ]
+        },
+        {
+          "collection": "faction_memberships",
+          "records": [
+            { "id": "fm_cenyi_office", "actorId": "pc_cenyi", "actorName": "岑一", "factionId": "faction_harbor_office", "role": "巡查员", "status": "active", "loyalty": 3, "influence": 2 },
+            { "id": "fm_liang_office", "actorId": "npc_guard_liang", "actorName": "梁科", "factionId": "faction_harbor_office", "role": "桥口守卫", "status": "active", "loyalty": 3, "influence": 1 },
+            { "id": "fm_yanchao_gang", "actorId": "npc_yanchao", "actorName": "阎潮", "factionId": "faction_tide_gang", "role": "副手", "status": "active", "loyalty": 4, "influence": 3 },
+            { "id": "fm_stump_kids", "actorId": "npc_stump", "actorName": "小桩", "factionId": "faction_scavenger_kids", "role": "头目", "status": "active", "loyalty": 4, "influence": 2 }
+          ]
+        }
+      ]
+    },
+    "runtimeRag": {
+      "collections": [
+        {
+          "collection": "system-test-gray-harbor",
+          "documents": [
+            {
+              "id": "gray_harbor_truth",
+              "text": "灰港回路真相：阎潮拆走旧雾灯芯，准备在黑潮码头换取走私通行。盐仓灰脚印从灰港市场通向旧盐仓，钟桥暗号证明潮帮盯梢，旧盐仓暗渠能绕到黑潮码头。",
+              "metadata": { "sourceId": "gray-harbor-truth", "topic": "truth", "importance": 5 }
+            },
+            {
+              "id": "gray_harbor_test_matrix",
+              "text": "测试矩阵：观察触发线索，移动触发地图关系和寻路，交涉触发说服/NPC状态，战斗触发雾魇，背包触发盐灯芯、油布地图、铜哨和绷带，阵营触发港务署、潮帮和拾荒童会。",
+              "metadata": { "sourceId": "gray-harbor-test-matrix", "topic": "test-plan", "importance": 5 }
+            },
+            {
+              "id": "gray_harbor_numeric_reference",
+              "text": "灰港数值参考：难度0-4；NPC态度0-5；普通态度每次变化1点，强证据最多2点；雾魇HP14威胁2；主角HP24专注8；盐灯芯powerScore=3，油布地图=1，铜哨=2，证物袋=1，绷带恢复HP3-5。",
+              "metadata": { "sourceId": "gray-harbor-reference", "topic": "numeric-reference", "importance": 5 }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

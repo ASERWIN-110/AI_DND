@@ -1,0 +1,725 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>AI DND Chat</title>
+    <link rel="icon" href="/app/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="/app/styles.css?v=20260603router1">
+    <script src="/app/app-extensions.js?v=20260603router1" defer></script>
+    <script src="/app/app.js?v=20260603router1" defer></script>
+  </head>
+  <body>
+    <div id="appShell" class="app-shell world-drawer-collapsed" data-testid="app-shell">
+      <button id="toggleInspectorButton" class="drawer-handle drawer-handle-left" type="button" title="收起左栏" aria-label="收起左栏" aria-expanded="true">‹</button>
+      <button id="toggleSidebarButton" class="drawer-handle drawer-handle-right" type="button" title="收起右栏" aria-label="收起右栏" aria-expanded="true">›</button>
+      <button id="toggleWorldDrawerButton" class="drawer-handle drawer-handle-top" type="button" title="展开世界抽屉" aria-label="展开世界抽屉" aria-expanded="false">⌄</button>
+
+      <section id="worldDrawer" class="world-drawer" aria-label="世界和历史抽屉">
+        <div class="world-drawer-header">
+          <div class="world-drawer-tabs" role="tablist" aria-label="世界抽屉视图">
+            <button id="worldDrawerClockTabButton" class="world-drawer-tab active" type="button" role="tab" aria-selected="true" aria-controls="worldClockPanel">世界时钟</button>
+            <button id="worldDrawerHistoryTabButton" class="world-drawer-tab" type="button" role="tab" aria-selected="false" aria-controls="worldHistoryPanel">历史记录</button>
+          </div>
+          <button id="refreshWorldDrawerButton" class="small-button" type="button" disabled>刷新</button>
+        </div>
+        <section id="worldClockPanel" class="world-drawer-panel active" role="tabpanel" aria-labelledby="worldDrawerClockTabButton">
+          <div id="worldClockContent" class="world-drawer-content"></div>
+        </section>
+        <section id="worldHistoryPanel" class="world-drawer-panel" role="tabpanel" aria-labelledby="worldDrawerHistoryTabButton" hidden>
+          <div id="worldHistoryContent" class="world-drawer-content"></div>
+        </section>
+      </section>
+
+      <section id="settingsTray" class="settings-tray collapsed" aria-label="设置">
+        <button id="toggleSettingsButton" class="settings-toggle" type="button" aria-expanded="false">设置</button>
+        <div id="settingsContent" class="settings-content">
+          <button id="openApiSettingsButton" class="secondary-button" type="button">API 设置</button>
+          <span id="apiSettingsSummary" class="settings-summary">服务端配置</span>
+          <button id="openSystemPromptButton" class="secondary-button" type="button">System Prompt</button>
+          <span id="systemPromptSummary" class="settings-summary">使用默认 System Prompt</span>
+          <button id="openLoopSettingsButton" class="secondary-button" type="button">Loop 管理</button>
+          <span id="loopHotSwitchSummary" class="settings-summary">读取中</span>
+          <button id="openDbQueryControllerButton" class="secondary-button" type="button">数据库查询控制器</button>
+          <span id="dbQueryControllerSummary" class="settings-summary">默认全显示</span>
+          <button id="openDebugPanelButton" class="secondary-button" type="button">Debug</button>
+          <span class="settings-summary">调试战斗与开发辅助功能</span>
+        </div>
+      </section>
+
+      <aside class="inspector" aria-label="上下文、数据和工具">
+        <div class="side-collapse-row inspector-collapse-row">
+          <span>Prompt / Lore / Tools</span>
+        </div>
+
+        <div class="inspector-tabs" role="tablist">
+          <button class="tab-button active" type="button" data-tab="context">上下文</button>
+          <button class="tab-button" type="button" data-tab="data">数据</button>
+          <button class="tab-button" type="button" data-tab="tools">工具</button>
+        </div>
+
+        <section id="contextPanel" class="inspector-panel active">
+          <div class="section-heading">
+            <h2>Context Planner</h2>
+            <button id="planContextButton" class="small-button" type="button" disabled>规划</button>
+          </div>
+          <div id="contextUsage" class="metric-row">
+            <span>selected 0</span>
+            <span>tokens 0</span>
+          </div>
+          <div id="contextSections" class="section-list"></div>
+          <label class="field-label" for="contextPreview">Prompt Context</label>
+          <textarea id="contextPreview" class="debug-textarea" rows="12" readonly></textarea>
+        </section>
+
+        <section id="dataPanel" class="inspector-panel">
+          <div class="section-heading">
+            <h2>Chat Data</h2>
+            <button id="refreshDataButton" class="small-button" type="button" disabled>刷新</button>
+          </div>
+          <div id="dataCollections" class="section-list"></div>
+        </section>
+
+        <section id="toolsPanel" class="inspector-panel">
+          <div class="section-heading">
+            <h2>工具</h2>
+            <button id="refreshToolsButton" class="small-button" type="button">刷新</button>
+          </div>
+          <div id="toolSummary" class="metric-row">
+            <span>public 0</span>
+            <span>all 0</span>
+          </div>
+          <div id="toolList" class="section-list"></div>
+        </section>
+      </aside>
+
+      <main class="chat-pane" aria-label="聊天">
+        <div id="sceneBackgroundLayerA" class="scene-background-layer active" aria-hidden="true"></div>
+        <div id="sceneBackgroundLayerB" class="scene-background-layer" aria-hidden="true"></div>
+        <header class="chat-header">
+          <div class="chat-title-block">
+            <span class="chat-kicker">AI DND Session</span>
+            <h2 id="chatTitle">未选择聊天</h2>
+            <p id="chatSubtitle">创建或选择一个聊天开始。</p>
+          </div>
+          <div class="header-actions">
+            <button id="exportChatButton" class="secondary-button" type="button" disabled>导出</button>
+            <button id="deleteChatButton" class="danger-button" type="button" disabled>删除</button>
+          </div>
+        </header>
+
+        <div id="messageList" class="message-list" aria-live="polite"></div>
+        <section id="sceneVisualPanel" class="scene-visual-panel" aria-label="场景视觉" hidden></section>
+
+        <div id="playerActionMenu" class="player-action-menu">
+          <button id="togglePlayerActionMenuButton" class="player-action-toggle" type="button" title="玩家动作" aria-label="玩家动作" aria-expanded="false">＋</button>
+          <div id="playerActionMenuPanel" class="player-action-panel" role="menu" hidden>
+            <button class="player-action-item" type="button" role="menuitem" data-player-action="inventory">
+              <span class="player-action-mark" aria-hidden="true">包</span>
+              <span class="player-action-label">背包</span>
+            </button>
+            <button class="player-action-item" type="button" role="menuitem" data-player-action="status">
+              <span class="player-action-mark" aria-hidden="true">态</span>
+              <span class="player-action-label">状态栏</span>
+            </button>
+            <button class="player-action-item" type="button" role="menuitem" data-player-action="map">
+              <span class="player-action-mark" aria-hidden="true">图</span>
+              <span class="player-action-label">地图</span>
+            </button>
+            <button class="player-action-item" type="button" role="menuitem" data-player-action="npcGraph">
+              <span class="player-action-mark" aria-hidden="true">人</span>
+              <span class="player-action-label">NPC关系</span>
+            </button>
+            <button class="player-action-item" type="button" role="menuitem" data-player-action="factionGraph">
+              <span class="player-action-mark" aria-hidden="true">营</span>
+              <span class="player-action-label">阵营图</span>
+            </button>
+          </div>
+        </div>
+
+        <form id="composerForm" class="composer">
+          <textarea id="messageInput" rows="2" placeholder="输入玩家行动或台词..." disabled></textarea>
+          <button id="sendButton" class="send-button" type="submit" disabled>发送</button>
+        </form>
+      </main>
+
+      <section id="agentProgressFloat" class="agent-progress-float" aria-live="polite" hidden>
+        <div class="agent-progress-header">
+          <span class="agent-progress-dot" aria-hidden="true"></span>
+          <strong>Agent 循环</strong>
+          <button id="agentProgressCloseButton" class="icon-button" type="button" title="关闭">×</button>
+        </div>
+        <div id="agentProgressStatus" class="agent-progress-status">等待中...</div>
+        <div id="agentProgressDetail" class="agent-progress-detail"></div>
+      </section>
+
+      <section id="routerReviewFloatStack" class="router-review-stack" aria-live="polite" aria-label="Router 计划项"></section>
+      <section id="settlementNoticeStack" class="settlement-notice-stack" aria-live="polite" aria-label="结算变化"></section>
+      <section id="combatOverlay" class="combat-overlay" aria-live="polite" aria-label="战斗界面" hidden>
+        <article id="combatWindow" class="combat-window">
+          <header class="combat-topbar">
+            <div class="combat-title-block">
+              <span id="combatStatusBadge" class="combat-status-badge">战斗</span>
+              <div>
+                <strong id="combatBattleTitle">战斗</strong>
+                <span id="combatBattleSubtitle">等待战斗数据</span>
+              </div>
+            </div>
+            <button id="combatExitButton" class="secondary-button" type="button" hidden>退出</button>
+          </header>
+
+          <section class="combat-stage" aria-label="战斗演出">
+            <div class="combat-stage-backdrop">
+              <div id="combatStageVisual" class="module-stage-visual" hidden></div>
+              <span class="combat-stage-line"></span>
+              <strong id="combatStageTitle">战斗</strong>
+              <span id="combatStageText"></span>
+            </div>
+            <div id="combatTurnMeta" class="combat-turn-meta"></div>
+          </section>
+
+          <section class="combat-board" aria-label="战斗状态">
+            <div class="combat-side combat-allies">
+              <h3>玩家方</h3>
+              <div id="combatAllyList" class="combatant-list"></div>
+            </div>
+            <div class="combat-side combat-enemies">
+              <h3>敌方</h3>
+              <div id="combatEnemyList" class="combatant-list"></div>
+            </div>
+          </section>
+
+          <section class="combat-action-area" aria-label="玩家操作">
+            <div class="combat-action-header">
+              <div>
+                <strong>玩家操作</strong>
+                <span id="combatActionHint">选择出招或输入特殊动作。</span>
+              </div>
+              <button id="combatSkillDrawerToggle" class="secondary-button" type="button" aria-expanded="true">收起技能</button>
+            </div>
+            <div id="combatSkillDrawer" class="combat-skill-drawer">
+              <div id="combatSkillList" class="combat-skill-list"></div>
+            </div>
+            <section id="combatSpecialPanel" class="combat-special-panel" hidden>
+              <label class="field-label" for="combatSpecialInput">特殊动作</label>
+              <div class="combat-special-row">
+                <input id="combatSpecialInput" type="text" placeholder="例如：踢翻火盆逼退敌人">
+                <button id="combatSpecialSubmitButton" class="primary-button" type="button">提交</button>
+              </div>
+            </section>
+            <div class="combat-command-row">
+              <button id="combatSpecialToggleButton" class="secondary-button" type="button">特殊动作</button>
+              <button id="combatSurrenderButton" class="danger-button" type="button">投降</button>
+              <button id="combatDebugWinButton" class="secondary-button combat-debug-button" type="button" hidden>一键胜利</button>
+              <button id="combatFinishWinButton" class="primary-button" type="button" hidden>胜利退出</button>
+            </div>
+            <div id="combatStatusText" class="combat-status-text"></div>
+          </section>
+
+          <aside class="combat-log-panel" aria-label="战斗记录">
+            <h3>战斗记录</h3>
+            <div id="combatEventLog" class="combat-event-log"></div>
+          </aside>
+        </article>
+      </section>
+      <div id="combatSkillTooltip" class="combat-skill-tooltip" role="tooltip" hidden></div>
+      <section id="persuasionOverlay" class="persuasion-overlay" aria-live="polite" aria-label="说服界面" hidden>
+        <article id="persuasionWindow" class="persuasion-window">
+          <header class="persuasion-topbar">
+            <div class="persuasion-title-block">
+              <span class="persuasion-status-badge">说服</span>
+              <div>
+                <strong id="persuasionTitle">说服模块</strong>
+                <span id="persuasionSubtitle">等待说服内容</span>
+              </div>
+            </div>
+            <button id="persuasionCloseButton" class="secondary-button" type="button">跳过</button>
+          </header>
+
+          <section class="persuasion-stage" aria-label="说服演出">
+            <div class="persuasion-stage-backdrop">
+              <div id="persuasionStageVisual" class="module-stage-visual" hidden></div>
+              <span class="persuasion-stage-line"></span>
+              <strong id="persuasionStageTitle">说服</strong>
+              <span id="persuasionStageText"></span>
+            </div>
+          </section>
+
+          <section class="persuasion-context-panel" aria-label="说服上下文">
+            <div class="persuasion-context-row">
+              <span>来源</span>
+              <strong id="persuasionSourceText">Router 选择了说服模块</strong>
+            </div>
+            <div class="persuasion-context-row">
+              <span>目标</span>
+              <strong id="persuasionTargetText">由裁决模块读取上下文判断</strong>
+            </div>
+          </section>
+
+          <section class="persuasion-input-panel" aria-label="玩家说服输入">
+            <label class="field-label" for="persuasionInput">说服内容</label>
+            <textarea id="persuasionInput" rows="6" placeholder="在这里写玩家实际说出口的话、证据、交换条件或威胁点。"></textarea>
+            <div class="persuasion-command-row">
+              <button id="persuasionCancelButton" class="secondary-button" type="button">取消</button>
+              <button id="persuasionSubmitButton" class="primary-button" type="button">提交说服并裁决</button>
+            </div>
+            <div id="persuasionStatusText" class="persuasion-status-text" aria-live="polite"></div>
+          </section>
+        </article>
+      </section>
+      <section id="adjudicationOverlay" class="adjudication-overlay" aria-live="polite" aria-label="裁决结果" hidden>
+        <article id="adjudicationCard" class="adjudication-card">
+          <div class="adjudication-header">
+            <div class="adjudication-heading">
+              <strong id="adjudicationTitle">裁决结果</strong>
+              <span id="adjudicationSummary">等待裁决</span>
+            </div>
+            <button id="adjudicationCloseButton" class="adjudication-close" type="button" title="接受裁决并关闭" aria-label="接受裁决并关闭">×</button>
+          </div>
+          <div id="adjudicationOutcome" class="adjudication-outcome">等待</div>
+          <div id="adjudicationContent" class="adjudication-content"></div>
+          <div id="adjudicationStatus" class="adjudication-status" hidden></div>
+          <section id="adjudicationAppealPanel" class="adjudication-appeal-panel" hidden>
+            <label class="field-label" for="adjudicationAppealText">反驳理由</label>
+            <textarea id="adjudicationAppealText" rows="4" placeholder="写明遗漏的事实、规则依据、数值来源或你希望修正的结果。"></textarea>
+            <div class="adjudication-appeal-actions">
+              <button id="adjudicationCancelAppealButton" class="secondary-button" type="button">取消</button>
+              <button id="adjudicationSubmitAppealButton" class="primary-button" type="button">提交重新裁决</button>
+            </div>
+          </section>
+          <div class="adjudication-actions">
+            <button id="adjudicationAppealButton" class="secondary-button" type="button">申请重新裁决</button>
+            <button id="adjudicationAcceptButton" class="primary-button" type="button">接受裁决</button>
+          </div>
+        </article>
+      </section>
+      <section id="diceRollOverlay" class="dice-roll-overlay" aria-live="polite" aria-label="骰子结果" hidden>
+        <article id="diceRollCard" class="dice-roll-card">
+          <div class="dice-roll-header">
+            <span id="diceRollBadge" class="dice-roll-badge">d20</span>
+            <div class="dice-roll-heading">
+              <strong id="diceRollTitle">骰子结果</strong>
+              <span id="diceRollSummary">等待结果</span>
+            </div>
+            <button id="diceRollCloseButton" class="dice-roll-close" type="button" title="关闭骰子结果" aria-label="关闭骰子结果">×</button>
+          </div>
+          <div id="diceRollTotal" class="dice-roll-total">0</div>
+          <dl id="diceRollDetails" class="dice-roll-details"></dl>
+          <div id="diceRollAttempts" class="dice-roll-attempts"></div>
+          <div id="diceRollStatus" class="dice-roll-status" hidden></div>
+          <div class="dice-roll-actions">
+            <button id="diceRollRerollButton" class="secondary-button" type="button">消耗激励点重投</button>
+          </div>
+        </article>
+      </section>
+
+      <aside class="sidebar" aria-label="角色和聊天">
+        <div class="side-collapse-row sidebar-collapse-row">
+          <span>Characters / Chats</span>
+        </div>
+
+        <div class="brand-row">
+          <div>
+            <h1>AI DND</h1>
+            <p><span id="connectionStatus">连接中</span></p>
+          </div>
+          <button id="refreshButton" class="icon-button" type="button" title="刷新">↻</button>
+        </div>
+
+        <section id="characterDrawerSection" class="sidebar-section character-drawer drawer-section collapsed">
+          <div class="section-heading drawer-heading character-drawer-heading">
+            <button id="toggleCharacterDrawerButton" class="drawer-title-button" type="button" aria-expanded="false" aria-controls="characterDrawerContent">
+              <span class="drawer-caret" aria-hidden="true"></span>
+              <span>角色</span>
+            </button>
+            <button id="openImportButton" class="small-button" type="button">导入</button>
+          </div>
+          <div id="characterDrawerContent" class="drawer-content character-drawer-content">
+            <button id="characterAvatarButton" class="character-avatar-card" type="button" title="预览头像">
+              <span id="characterAvatarFallback">?</span>
+              <img id="characterAvatarImage" alt="" hidden>
+            </button>
+            <label class="field-label" for="characterSelect">当前角色</label>
+            <select id="characterSelect"></select>
+            <div class="character-actions">
+              <button id="editCharacterButton" class="secondary-button" type="button">编辑</button>
+              <button id="exportCharacterButton" class="secondary-button" type="button">导出</button>
+              <button id="deleteCharacterButton" class="danger-button" type="button">删除</button>
+            </div>
+            <button id="openInitialSettingButton" class="secondary-button full-width" type="button">初始设定</button>
+            <button id="seedCharacterButton" class="secondary-button full-width" type="button">创建示例角色</button>
+          </div>
+        </section>
+
+        <section id="chatDrawerSection" class="sidebar-section chat-list-section chat-drawer drawer-section collapsed">
+          <div class="section-heading drawer-heading">
+            <button id="toggleChatDrawerButton" class="drawer-title-button" type="button" aria-expanded="false" aria-controls="chatDrawerContent">
+              <span class="drawer-caret" aria-hidden="true"></span>
+              <span>聊天</span>
+            </button>
+            <button id="openChatImportButton" class="small-button" type="button">导入</button>
+            <span id="chatCount" class="muted-count">0</span>
+          </div>
+          <div id="chatDrawerContent" class="drawer-content chat-drawer-content">
+            <div class="chat-create-panel">
+              <label class="field-label" for="newChatTitle">新聊天标题</label>
+              <input id="newChatTitle" type="text" placeholder="旧市场调查">
+              <button id="newChatButton" class="primary-button full-width" type="button">创建聊天</button>
+            </div>
+            <div id="chatList" class="chat-list" role="list"></div>
+          </div>
+        </section>
+      </aside>
+    </div>
+
+    <dialog id="importDialog" class="modal">
+      <form method="dialog" class="modal-content">
+        <div class="modal-header">
+          <h2>导入角色卡</h2>
+          <button class="icon-button" value="cancel" type="submit" title="关闭">×</button>
+        </div>
+        <label class="field-label" for="characterJsonPath">Character Card JSON 文件路径</label>
+        <input id="characterJsonPath" type="text" placeholder="tmp/imports/character.json">
+        <label class="field-label" for="characterJson">或粘贴 Character Card JSON</label>
+        <textarea id="characterJson" rows="14" spellcheck="false"></textarea>
+        <label class="field-label" for="characterResourcesJsonPath">数据库/RAG sidecar JSON 文件路径（可选）</label>
+        <input id="characterResourcesJsonPath" type="text" placeholder="tmp/imports/resources.json">
+        <label class="field-label" for="characterResourcesJson">或粘贴数据库/RAG sidecar JSON（可选）</label>
+        <textarea id="characterResourcesJson" rows="6" spellcheck="false"></textarea>
+        <div class="modal-actions">
+          <button id="fillSampleButton" class="secondary-button" type="button">填入示例</button>
+          <button id="importCharacterButton" class="primary-button" type="button">导入角色</button>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog id="chatImportDialog" class="modal">
+      <form method="dialog" class="modal-content">
+        <div class="modal-header">
+          <h2>导入聊天</h2>
+          <button class="icon-button" value="cancel" type="submit" title="关闭">×</button>
+        </div>
+        <label class="field-label" for="chatJsonPath">Chat JSON 文件路径</label>
+        <input id="chatJsonPath" type="text" placeholder="tmp/imports/chat.json">
+        <label class="field-label" for="chatJson">或粘贴 Chat JSON</label>
+        <textarea id="chatJson" rows="14" spellcheck="false"></textarea>
+        <label class="field-label" for="chatResourcesJsonPath">数据库/RAG sidecar JSON 文件路径（可选）</label>
+        <input id="chatResourcesJsonPath" type="text" placeholder="tmp/imports/chat-resources.json">
+        <label class="field-label" for="chatResourcesJson">或粘贴数据库/RAG sidecar JSON（可选）</label>
+        <textarea id="chatResourcesJson" rows="6" spellcheck="false"></textarea>
+        <div class="modal-actions">
+          <button id="importChatButton" class="primary-button" type="button">导入聊天</button>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog id="npcSettingDialog" class="modal npc-setting-dialog">
+      <form method="dialog" class="modal-content">
+        <div class="modal-header">
+          <h2 id="npcSettingDialogTitle">选择玩家 NPC 设定</h2>
+          <button id="npcSettingCloseButton" class="icon-button" value="cancel" type="submit" title="稍后处理">×</button>
+        </div>
+        <p id="npcSettingDialogIntro" class="modal-help-text"></p>
+        <div id="npcSettingStatus" class="npc-setting-status" hidden></div>
+        <section id="npcSettingSelectView" class="npc-setting-view">
+          <div id="npcSettingList" class="npc-setting-list"></div>
+          <button id="npcSettingCreateModeButton" class="secondary-button full-width" type="button">没有合适的，手动创建</button>
+        </section>
+        <section id="npcSettingCreateView" class="npc-setting-view" hidden>
+          <div class="npc-setting-create-grid">
+            <label class="field-label" for="npcSettingNameInput">名称</label>
+            <input id="npcSettingNameInput" type="text" placeholder="艾琳">
+            <label class="field-label" for="npcSettingIdInput">NPC ID</label>
+            <input id="npcSettingIdInput" type="text" placeholder="player_arin">
+          </div>
+          <label class="field-label" for="npcSettingSummaryInput">简要设定</label>
+          <textarea id="npcSettingSummaryInput" rows="5" placeholder="这个角色是谁、当前目标、重要限制或身份。"></textarea>
+          <label class="field-label" for="npcSettingGreetingInput">开局处境</label>
+          <textarea id="npcSettingGreetingInput" rows="4" placeholder="可选。写入后会作为主角发出的开场消息；留空则不固定开局，让 AI 自行生成。"></textarea>
+        </section>
+        <div class="modal-actions">
+          <button id="npcSettingLaterButton" class="secondary-button" type="button">稍后</button>
+          <button id="npcSettingBackButton" class="secondary-button" type="button" hidden>返回列表</button>
+          <button id="npcSettingConfirmButton" class="primary-button" type="button">使用这个设定</button>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog id="characterEditorDialog" class="modal">
+      <form method="dialog" class="modal-content">
+        <div class="modal-header">
+          <h2>编辑角色卡</h2>
+          <button class="icon-button" value="cancel" type="submit" title="关闭">×</button>
+        </div>
+        <div class="character-editor-layout">
+          <button id="editorAvatarButton" class="character-avatar-card editor-avatar-card" type="button" title="更换头像">
+            <span id="editorAvatarFallback">?</span>
+            <img id="editorAvatarImage" alt="" hidden>
+          </button>
+          <div>
+            <p id="characterEditorName" class="modal-help-text">未选择角色</p>
+            <p class="modal-help-text">点击头像框可裁剪并更换头像。头像会保存到角色卡 JSON 的 data.avatar 字段。</p>
+          </div>
+        </div>
+        <input id="characterAvatarFile" type="file" accept="image/*" hidden>
+        <label class="field-label" for="characterEditorJson">Character Card JSON</label>
+        <textarea id="characterEditorJson" class="json-editor" rows="16" spellcheck="false"></textarea>
+        <div class="modal-actions">
+          <button id="exportCharacterFromEditorButton" class="secondary-button" type="button">导出</button>
+          <button id="saveCharacterButton" class="primary-button" type="button">保存角色卡</button>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog id="avatarCropDialog" class="modal avatar-crop-dialog">
+      <form method="dialog" class="modal-content">
+        <div class="modal-header">
+          <h2>裁剪头像</h2>
+          <button id="closeAvatarCropButton" class="icon-button" type="button" title="关闭">×</button>
+        </div>
+        <div class="avatar-crop-workspace">
+          <canvas id="avatarCropCanvas" class="avatar-crop-canvas" width="420" height="420"></canvas>
+        </div>
+        <div class="avatar-crop-controls">
+          <label class="range-row" for="avatarCropZoomInput">
+            <span>缩放</span>
+            <input id="avatarCropZoomInput" type="range" min="1" max="4" step="0.01" value="1">
+          </label>
+          <label class="range-row" for="avatarCropRotationInput">
+            <span>旋转</span>
+            <input id="avatarCropRotationInput" type="range" min="-180" max="180" step="1" value="0">
+          </label>
+          <div class="avatar-crop-tool-row">
+            <button id="rotateAvatarLeftButton" class="secondary-button" type="button" title="向左旋转">↶</button>
+            <button id="resetAvatarCropButton" class="secondary-button" type="button">重置</button>
+            <button id="rotateAvatarRightButton" class="secondary-button" type="button" title="向右旋转">↷</button>
+          </div>
+        </div>
+        <div class="modal-actions">
+          <button id="cancelAvatarCropButton" class="secondary-button" type="button">取消</button>
+          <button id="applyAvatarCropButton" class="primary-button" type="button">使用头像</button>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog id="avatarPreviewDialog" class="avatar-preview-dialog">
+      <div class="avatar-preview-content">
+        <button id="closeAvatarPreviewButton" class="icon-button avatar-preview-close" type="button" title="关闭">×</button>
+        <img id="avatarPreviewImage" alt="角色头像预览" hidden>
+        <div id="avatarPreviewFallback" class="avatar-preview-fallback">?</div>
+      </div>
+    </dialog>
+
+    <dialog id="apiSettingsDialog" class="modal compact-modal">
+      <form method="dialog" class="modal-content">
+        <div class="modal-header">
+          <h2>聊天 API 设置</h2>
+          <button class="icon-button" value="cancel" type="submit" title="关闭">×</button>
+        </div>
+        <p class="modal-help-text">这里只修改聊天回复使用的 API。工具、裁定、记忆、结构化处理等更细的 API 目标请在工具管理器中配置。</p>
+        <button id="openToolManagerButton" class="small-button" type="button">打开工具管理器</button>
+
+        <div class="form-grid">
+          <label class="field-label" for="apiProviderSelect">Provider</label>
+          <select id="apiProviderSelect">
+            <option value="server">服务端配置</option>
+            <option value="openai">OpenAI</option>
+            <option value="openai-compatible">Custom OpenAI Compatible</option>
+            <option value="llama.cpp">llama.cpp</option>
+            <option value="vllm">vLLM</option>
+            <option value="tabbyapi">TabbyAPI</option>
+            <option value="ollama">Ollama</option>
+            <option value="lm-studio">LM Studio</option>
+            <option value="koboldcpp">KoboldCpp</option>
+            <option value="mock">Mock</option>
+          </select>
+
+          <label class="field-label" for="apiBaseUrl">Base URL</label>
+          <input id="apiBaseUrl" type="url" placeholder="https://api.openai.com/v1">
+
+          <label class="field-label" for="apiKey">API Key</label>
+          <input id="apiKey" type="password" autocomplete="off">
+
+          <label class="field-label" for="apiModel">Model</label>
+          <input id="apiModel" type="text" placeholder="gpt-4.1-mini">
+
+          <div class="field-pair">
+            <div>
+              <label class="field-label" for="apiTemperature">Temperature</label>
+              <input id="apiTemperature" type="number" min="0" step="0.1" placeholder="0.7">
+            </div>
+            <div>
+              <label class="field-label" for="apiMaxTokens">Max Tokens</label>
+              <input id="apiMaxTokens" type="number" min="1" step="1" placeholder="2000">
+            </div>
+          </div>
+        </div>
+
+        <div class="api-connection-row">
+          <button id="testApiConnectionButton" class="secondary-button" type="button">测试连接状态</button>
+          <span id="apiConnectionStatus" class="api-connection-status" role="status">上次保存的设置会自动用于聊天回复。</span>
+        </div>
+
+        <div class="modal-actions">
+          <button id="resetApiSettingsButton" class="secondary-button" type="button">重置</button>
+          <button id="saveApiSettingsButton" class="primary-button" type="button">保存并应用</button>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog id="systemPromptDialog" class="modal">
+      <form method="dialog" class="modal-content">
+        <div class="modal-header">
+          <h2>System Prompt</h2>
+          <button class="icon-button" value="cancel" type="submit" title="关闭">×</button>
+        </div>
+        <p class="modal-help-text">这里编辑聊天回复使用的全局 System Prompt。留空时使用角色卡或服务端默认 prompt。</p>
+        <label class="field-label" for="systemPromptText">System Prompt</label>
+        <textarea id="systemPromptText" class="prompt-editor" rows="14" spellcheck="false"></textarea>
+        <div class="modal-actions">
+          <button id="resetSystemPromptButton" class="secondary-button" type="button">清空</button>
+          <button id="saveSystemPromptButton" class="primary-button" type="button">保存</button>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog id="loopSettingsDialog" class="modal compact-modal">
+      <form method="dialog" class="modal-content">
+        <div class="modal-header">
+          <h2>Loop 管理</h2>
+          <button class="icon-button" value="cancel" type="submit" title="关闭">×</button>
+        </div>
+        <p class="modal-help-text">这里只能热切换当前聊天使用的 Agent 循环。新增、编辑、导入、归档循环配置请去工具管理器修改。</p>
+        <div class="loop-switch-panel" aria-label="循环配置热切换">
+          <div class="loop-switch-header">
+            <div>
+              <strong>当前循环</strong>
+              <span id="loopHotSwitchDialogSummary" class="settings-summary">读取中</span>
+            </div>
+            <button id="refreshLoopHotSwitchButton" class="icon-button compact" type="button" title="刷新循环配置">↻</button>
+          </div>
+          <label class="field-label" for="loopConfigHotSelect">循环配置</label>
+          <select id="loopConfigHotSelect" aria-label="选择当前聊天循环配置"></select>
+          <div class="loop-switch-actions">
+            <button id="switchLoopHotButton" class="secondary-button" type="button">热切换</button>
+            <button id="openLoopManagerButton" class="small-button" type="button">去管理器修改</button>
+          </div>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog id="debugPanelDialog" class="modal compact-modal debug-panel-dialog">
+      <form method="dialog" class="modal-content">
+        <div class="modal-header">
+          <h2>Debug</h2>
+          <button class="icon-button" value="cancel" type="submit" title="关闭">×</button>
+        </div>
+        <p class="modal-help-text">这里放只用于调试的功能。调试战斗会写入当前聊天的测试战斗数据，不代表正式剧情结算。</p>
+        <section class="debug-panel" aria-label="Debug 功能">
+          <label class="settings-checkbox-row" for="debugCombatWinToggle">
+            <span>战斗菜单显示一键胜利</span>
+            <input id="debugCombatWinToggle" type="checkbox">
+          </label>
+          <button id="debugStartCombatButton" class="primary-button" type="button">立刻进入战斗</button>
+          <button id="debugOpenPersuasionButton" class="secondary-button" type="button">打开说服界面</button>
+          <button id="debugOpenDiceButton" class="secondary-button" type="button">预览骰子界面</button>
+          <button id="debugOpenAdjudicationButton" class="secondary-button" type="button">预览裁决界面</button>
+          <div id="debugPanelStatus" class="debug-panel-status" aria-live="polite">选择一个调试动作。</div>
+        </section>
+      </form>
+    </dialog>
+
+    <dialog id="dbQueryControllerDialog" class="modal db-query-controller-dialog">
+      <form method="dialog" class="modal-content">
+        <div class="modal-header">
+          <h2>数据库查询控制器</h2>
+          <div class="modal-header-actions">
+            <button id="reloadDbQueryControllerButton" class="icon-button" type="button" title="刷新字段">↻</button>
+            <button class="icon-button" value="cancel" type="submit" title="关闭">×</button>
+          </div>
+        </div>
+        <p class="modal-help-text">这里只控制玩家动作弹窗能显示哪些 Chat Data 字段；数据库、RAG 和工具权限本身仍由管理器处理。</p>
+        <div id="dbQueryControllerContent" class="db-query-controller-content"></div>
+        <div class="modal-actions">
+          <button id="resetDbQueryControllerButton" class="secondary-button" type="button">恢复全显示</button>
+          <button id="saveDbQueryControllerButton" class="primary-button" type="button">保存</button>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog id="playerActionDialog" class="modal player-action-dialog">
+      <form method="dialog" class="modal-content">
+        <div class="modal-header">
+          <h2 id="playerActionDialogTitle">玩家信息</h2>
+          <div class="modal-header-actions">
+            <button id="refreshPlayerActionDialogButton" class="icon-button" type="button" title="刷新">↻</button>
+            <button class="icon-button" value="cancel" type="submit" title="关闭">×</button>
+          </div>
+        </div>
+        <p id="playerActionDialogSubtitle" class="modal-help-text">读取当前聊天数据库。</p>
+        <div id="playerActionDialogContent" class="player-action-content"></div>
+        <div id="slotUseTooltip" class="slot-use-tooltip" role="tooltip" hidden></div>
+        <div id="slotUseActionPopover" class="slot-use-action-popover" hidden></div>
+      </form>
+    </dialog>
+
+    <section id="initialSettingEditor" class="floating-editor" aria-label="初始设定编辑器" hidden>
+      <div id="initialSettingEditorHeader" class="floating-editor-header">
+        <div class="floating-title">
+          <h2>初始设定</h2>
+          <span id="initialSettingCharacterName">未选择角色</span>
+        </div>
+        <div class="floating-header-actions">
+          <button id="initialSettingReloadButton" class="icon-button" type="button" title="重新载入">↻</button>
+          <button id="closeInitialSettingButton" class="icon-button" type="button" title="关闭">×</button>
+        </div>
+      </div>
+
+      <div class="floating-editor-body">
+        <div id="initialSettingStats" class="metric-row compact-metrics">
+          <span>collections 0</span>
+          <span>records 0</span>
+        </div>
+
+        <div id="initialSettingStorage" class="storage-panel"></div>
+
+        <label class="sync-field-toggle" for="initialSettingSyncExistingFields">
+          <input id="initialSettingSyncExistingFields" type="checkbox" checked>
+          <span>同步已有聊天数据</span>
+        </label>
+
+        <div class="schema-workspace">
+          <aside class="schema-navigator" aria-label="Schema collections">
+            <div class="schema-navigator-header">
+              <span>Schema</span>
+              <button id="initialSettingAddCollectionButton" class="icon-button" type="button" title="新增 collection">＋</button>
+            </div>
+            <div id="initialSettingCollectionList" class="schema-list"></div>
+          </aside>
+
+          <section id="initialSettingCollectionEditor" class="schema-detail" aria-label="Collection editor"></section>
+        </div>
+
+        <details class="json-fallback">
+          <summary>完整 JSON</summary>
+          <label class="field-label" for="initialSettingJson">Initial Setting JSON</label>
+          <textarea id="initialSettingJson" class="json-editor" spellcheck="false"></textarea>
+        </details>
+
+        <div class="floating-actions">
+          <button id="initialSettingPreviewButton" class="secondary-button" type="button">预览</button>
+          <button id="initialSettingSaveButton" class="primary-button" type="button">保存</button>
+          <button id="initialSettingExportButton" class="secondary-button" type="button">导出当前</button>
+          <button id="initialSettingExportAllButton" class="secondary-button" type="button">导出全部</button>
+          <button id="initialSettingApplyChatButton" class="secondary-button" type="button">应用当前聊天</button>
+          <button id="initialSettingApplyAllButton" class="secondary-button" type="button">应用全部聊天</button>
+          <button id="initialSettingDeleteButton" class="danger-button" type="button">删除设定</button>
+        </div>
+
+        <pre id="initialSettingOutput" class="code-output"></pre>
+      </div>
+    </section>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  </body>
+</html>

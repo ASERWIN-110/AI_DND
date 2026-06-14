@@ -1,0 +1,27 @@
+Harbor Bronze Door example import
+
+Files:
+  examples/characters/harbor-bronze-door.card.json
+  examples/characters/harbor-bronze-door.resources.json
+
+Load in the web UI:
+  1. Start the app.
+  2. Open http://127.0.0.1:8787/
+  3. Click the character Import button.
+  4. Fill "Character Card JSON file path" with:
+       examples/characters/harbor-bronze-door.card.json
+  5. Fill "database/RAG sidecar JSON file path" with:
+       examples/characters/harbor-bronze-door.resources.json
+  6. Click "Import character".
+  7. Create a new chat.
+  8. When asked to choose a player NPC setting, choose Linya.
+
+What this example includes:
+  - A Character Card V2 compatible GM card.
+  - Initial player state for Linya.
+  - Mel as an NPC.
+  - Inventory, status bar, skill bar, equipment, and special statuses.
+  - One scene, one mounted map, NPC relationship data, and faction graph data.
+
+Suggested first player action:
+  I inspect the broken salt line and drag marks without touching the bronze door.

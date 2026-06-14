@@ -1,0 +1,11 @@
+node_modules/
+.runtime/
+.npm-cache/
+.npm-tmp/
+.env
+.DS_Store
+.playwright-cli/
+coverage/
+dist/
+tmp/
+data/

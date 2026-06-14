@@ -1,0 +1,80 @@
+{
+  "id": "example-visual-audio-mod",
+  "name": "Example Visual and Audio Mod",
+  "version": "0.1.0",
+  "permissions": [],
+  "requiresTools": [],
+  "events": [
+    "scene:changed",
+    "npc:mounted",
+    "npc:speech",
+    "message:rendered",
+    "combat:start",
+    "combat:action",
+    "persuasion:start",
+    "inventory:changed",
+    "status:changed"
+  ],
+  "assets": [
+    {
+      "id": "mira-portrait-example",
+      "type": "image",
+      "targetType": "npc",
+      "targetId": "npc_mira",
+      "slot": "portrait",
+      "url": "/mods/assets/mira.webp",
+      "renderer": "static-image",
+      "metadata": {
+        "description": "Static fallback portrait."
+      }
+    },
+    {
+      "id": "mira-live2d-example",
+      "type": "live2d",
+      "targetType": "npc",
+      "targetId": "npc_mira",
+      "slot": "portrait",
+      "url": "/mods/assets/mira.model3.json",
+      "renderer": "live2d",
+      "metadata": {
+        "fallbackAssetId": "mira-portrait-example"
+      }
+    },
+    {
+      "id": "old-tavern-background-example",
+      "type": "image",
+      "targetType": "map",
+      "targetId": "old_tavern",
+      "slot": "background",
+      "url": "/mods/assets/old-tavern.webp",
+      "renderer": "static-image"
+    },
+    {
+      "id": "tavern-bgm-example",
+      "type": "audio",
+      "targetType": "scene",
+      "targetId": "old_tavern",
+      "slot": "bgm",
+      "url": "/mods/assets/tavern.ogg",
+      "metadata": {
+        "channel": "bgm",
+        "loop": true
+      }
+    }
+  ],
+  "audio": {
+    "voiceBindings": [
+      {
+        "npcId": "npc_mira",
+        "voiceId": "mira_soft",
+        "provider": "local_tts"
+      }
+    ]
+  },
+  "settingsPanels": [
+    {
+      "id": "example-visual-audio-settings",
+      "title": "Example Mod Settings"
+    }
+  ]
+}

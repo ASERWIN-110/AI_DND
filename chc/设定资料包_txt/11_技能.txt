@@ -1,0 +1,101 @@
+# 技能
+用途：写入 skill_registry。技能只写触发条件和效果边界；升级、修炼、临时加成要用工具或状态写库。
+
+## 碧水基础御水术 [skill_basic_water_control]
+分类：magic
+能力字段：wisdom
+等级量尺：{"untrained":0,"entry":1,"trained":2,"expert":3,"master":4}
+事实：基础水修控水、避水、感潮与低阶术法操作。
+边界/效果：水域、潮气、雾气或水行物品相关行动可提供 +1/+2 条件。
+数值：{"checkBonus":2}
+来源：chc/RPG配置/角色txt
+
+## 沧海横流诀入门残式 [skill_canghai_intro]
+分类：magic
+能力字段：wisdom
+等级量尺：{"untrained":0,"entry":1,"trained":2,"expert":3,"master":4}
+事实：碧水宫水行功法残式，适合作为成长线。
+边界/效果：未完整修成前只能提供有限水势牵引、防守或破招抓手。
+数值：{"checkBonus":2}
+来源：chc/RPG配置/角色txt
+
+## 星命瞳观测 [skill_star_observation]
+分类：knowledge
+能力字段：intelligence
+等级量尺：{"untrained":0,"entry":1,"trained":2,"expert":3,"master":4}
+事实：方家星命与预警方向能力。
+边界/效果：可读取异兆、危险、命数偏移；失败可能增加压力或误判。
+数值：{"checkBonus":3}
+来源：chc/RPG配置/角色txt
+
+## 照雪刀意 [skill_snowblade_intent]
+分类：combat
+能力字段：dexterity
+等级量尺：{"untrained":0,"entry":1,"trained":2,"expert":3,"master":4}
+事实：方瑶光相关刀修能力锚点。
+边界/效果：适合破招、斩断术式、压迫敌意；高阶使用需要境界和代价。
+数值：{"attackBonus":3}
+来源：chc/RPG配置/角色txt
+
+## 云来楼情报交易 [skill_intel_brokerage]
+分类：social
+能力字段：charisma
+等级量尺：{"untrained":0,"entry":1,"trained":2,"expert":3,"master":4}
+事实：买卖情报、打听风闻、验证线索来源。
+边界/效果：用灵石、人情或交换条件换取入口；不直接揭完整真相。
+数值：{"checkBonus":2}
+来源：chc/RPG配置/角色txt
+
+## 禁器解析 [skill_forbidden_art_analysis]
+分类：knowledge
+能力字段：intelligence
+等级量尺：{"untrained":0,"entry":1,"trained":2,"expert":3,"master":4}
+事实：识别禁器、污染、权限、反制入口。
+边界/效果：涉及禁器时用于判断风险、权限和反制，不提供无代价控制。
+数值：{"checkBonus":3}
+来源：chc/RPG配置/角色txt
+
+## 镜术与梦境辨识 [skill_mirror_dream]
+分类：magic
+能力字段：wisdom
+等级量尺：{"untrained":0,"entry":1,"trained":2,"expert":3,"master":4}
+事实：镜月天、梦境、幻象、记忆场景相关辨识。
+边界/效果：可分辨梦境层级、镜像提示和隐藏代价。
+数值：{"checkBonus":2}
+来源：chc/RPG配置/角色txt
+
+## 霜天剑法 [skill_frost_sky_sword]
+分类：combat
+能力字段：dexterity
+等级量尺：{"untrained":0,"entry":1,"trained":2,"expert":3,"master":4}
+事实：归尘书院婉悦相关剑修锚点。
+边界/效果：用于冷冽、精确、公开对决式剑法；若角色失控，应以残留剑意或反抗裂缝出现。
+数值：{"attackBonus":3}
+来源：chc/RPG配置/角色txt
+
+## 坤舆镇压术 [skill_earth_suppression]
+分类：magic
+能力字段：wisdom
+等级量尺：{"untrained":0,"entry":1,"trained":2,"expert":3,"master":4}
+事实：归尘书院土修、封镇、地脉与九幽地眼相关能力。
+边界/效果：可用于镇压、筑阵、稳固封印；强行使用会消耗场景资源或引动地脉压力。
+数值：{"checkBonus":3}
+来源：chc/RPG配置/角色txt
+
+## 法器鉴定 [skill_artifact_appraisal]
+分类：knowledge
+能力字段：intelligence
+等级量尺：{"untrained":0,"entry":1,"trained":2,"expert":3,"master":4}
+事实：鉴别灵器、禁器、残篇、符灰、拍品和伪装物。
+边界/效果：鉴定成功只揭示当前层级能力；高阶隐藏层需要更多线索、工具或代价。
+数值：{"checkBonus":2}
+来源：chc/RPG配置/角色txt
+
+## 宗门礼法与身份周旋 [skill_sect_etiquette]
+分类：social
+能力字段：charisma
+等级量尺：{"untrained":0,"entry":1,"trained":2,"expert":3,"master":4}
+事实：在宗门、世家、书院和商会中利用身份、礼法和人情推进目标。
+边界/效果：用于降低冲突、争取面见、借调资源；过度使用会增加账目与关注。
+数值：{"checkBonus":2}
+来源：chc/RPG配置/角色txt

@@ -1,0 +1,6 @@
+{
+  "allowScripts": false,
+  "mods": [
+    "/mods/example-mod.json"
+  ]
+}

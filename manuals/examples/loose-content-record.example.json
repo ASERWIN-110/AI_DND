@@ -1,0 +1,46 @@
+{
+  "id": "blade_of_threads",
+  "name": "Blade of Threads",
+  "description": "A ceremonial blade said to cut fate under rare conditions.",
+  "tags": ["weapon", "special"],
+  "numericValues": {
+    "rarityTier": 4
+  },
+  "metadata": {
+    "executionMode": "hybrid",
+    "targetPolicy": "singleEnemy",
+    "useEffects": {
+      "damage": [
+        {
+          "type": "slashing",
+          "amount": 6
+        }
+      ]
+    },
+    "specialHandling": {
+      "requiresAdjudication": true,
+      "routeTo": "system.action.resolve",
+      "text": "May cut a narrative thread of fate if the scene supports it."
+    },
+    "visual": {
+      "targetType": "item",
+      "slot": "icon"
+    },
+    "extension": {
+      "system.alchemy": {
+        "reagentAffinity": "silver",
+        "distillationTier": 2
+      }
+    }
+  },
+  "visualRefs": [
+    {
+      "targetType": "item",
+      "targetId": "blade_of_threads",
+      "slot": "icon",
+      "assetId": "blade_of_threads_icon"
+    }
+  ],
+  "lifecycleScope": "character",
+  "lifecycleLevel": "L3"
+}

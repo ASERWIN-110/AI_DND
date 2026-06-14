@@ -1,0 +1,49 @@
+{
+  "package": "八荒RPG SillyTavern多视角金手指版",
+  "generated_at": "2026-05-26T00:00:00+08:00",
+  "based_on": "SillyTavern导入版_八荒RPG",
+  "character_cards": [
+    "角色卡/八荒GM_v3_多视角_内嵌System版.json",
+    "角色卡/八荒GM_v3_多视角版.json",
+    "角色卡/八荒GM_多视角兼容版.json"
+  ],
+  "worldbooks": [
+    "世界书/八荒RPG世界书_多视角版.json"
+  ],
+  "system_prompts": [
+    "SystemPrompt/八荒系统提示词_多视角版.txt"
+  ],
+  "authors_notes": [],
+  "rag_event_files": 92,
+  "rag_index": "RAG事件库索引.txt",
+  "notes": "多视角金手指版：GM不绑定清研之子；状态记录包含“视角/气运”；指定玩家角色可拥有可控开局金手指；境界只作压力/消耗/反制因素，越境战斗常态但需抓手和代价；双人格NPC按人格状态机维护锚点和人格态；RB角色基线用于开局注册和原设定锁，防止重要NPC身份/语气/人格态变形；低风险自由行动宽松，中高风险给消耗/关注/反制；简单事件2-3轮内结算；初始事件为TUT可跳过教程；修炼/服丹/炼器/认主/奇遇/闭关后必须扣库存、写成长、迁移设定并瘦身。",
+  "worldbook_entries": 111,
+  "added_adult_event_files": 14,
+  "troubleshooting": "加载检查与故障排查.txt",
+  "rag_usage_policy": "I/T/current-F are canonical or must-trigger; G luck entries trigger only for registered luck; RB entries are conservative character baselines, not plots; GROW is settlement flow; all other RAG entries are examples to transform, not scripts to copy.",
+  "status_policy": "No Author Note or scripts. Current viewpoint, protagonist luck and state are determined by the latest visible 【状态记录】, especially 视角/主角/气运 fields.",
+  "view_templates": [
+    "视角模板/李寻道_清研之子开局.txt",
+    "视角模板/方澜视角开局.txt",
+    "视角模板/某人视角开局.txt",
+    "视角模板/自定义角色开局模板.txt"
+  ],
+  "luck_policy": "Only current player viewpoints with a registered G luck id may trigger luck events. Strong rewards must be recorded as unidentified, sealed, growth-type, attunement-gated, costly, or long-term events.",
+  "added_luck_event_files": 6,
+  "pacing_policy": "Low-risk actions usually resolve immediately. Medium-risk actions resolve with cost, partial success, TMP attention, pressure, exposure, debt, accounts, or enemy reaction. High-risk actions require method/resources/preparation or become stage goals.",
+  "tutorial_policy": "Opening events are TUT optional tutorials. If the player skips, leaves, shops, cultivates, or pursues another goal, the tutorial is archived and removed from active events without punishment.",
+  "realm_policy": "Realm is not a hard win/loss lock. Long-Aotian-style cross-realm combat is normal; adjudicate with luck, artifacts, counters, formations, terrain, ambush, preparation, cost and stage-victory goals. Realm mainly increases pressure, consumption, exposure and counterattack risk.",
+  "personality_policy": "Dual-personality NPCs use a personality state machine. Track persona in 演绎/角色/傀儡; switch only on explicit anchors, artifact/controller triggers, dreams, private timing, confrontation, or resolved T events; PERS RAG stores exact anchors.",
+  "difficulty_policy": "Slightly tightened difficulty: no dice and no harsh blocking, but risk tiers must add costs, counters, resource drain, attention clocks, or narrower objectives for medium/high-risk actions.",
+  "growth_policy": "Cultivation, pills, artifact attunement/refining, opportunities, seclusion and reward redemption must immediately deduct inventory/resources, add concrete growth, migrate items to modules/abilities/archive, and remove or merge consumed, learned, attuned, expired or obsolete entries.",
+  "inventory_policy": "Inventory/status slimming: keep only important U items, rare materials, quest items, current consumables/artifacts and active modules. Merge low-level, duplicate, unused or superseded techniques/skills/artifacts into PACK entries, archive summaries, or mark as discarded.",
+  "character_baseline_policy": "RB character baselines register important NPC hard anchors at viewpoint lock or first appearance. Use REG packages to preserve original settings while allowing inactive characters to fade from the active status list; later appearances must restore identity, persona, speech/action anchors, knowledge boundaries and forbidden deformations from RB.",
+  "added_character_baseline_files": 5,
+  "creator_notes_policy": "Character-card creator_notes now contains a compact permanent hard-anchor block: viewpoint identity, status priority, no premature late-state use, REG/RB baseline registration, key NPC initial anchors, and growth/inventory settlement. It is intentionally short because creator_notes are strong but permanently token-expensive.",
+  "permanent_creator_notes_chars": 600,
+  "status_bar_templates": [
+    "状态栏模板/通用状态栏模块模板.txt",
+    "状态栏模板/单角色状态栏短模板.txt"
+  ],
+  "status_bar_template_policy": "Reusable templates for migrating the state-record format into other SillyTavern character cards. The general template supports switchable tracked objects; the short template is for single-character cards."
+}
